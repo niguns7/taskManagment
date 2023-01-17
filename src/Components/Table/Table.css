@@ -70,6 +70,9 @@ select {
 .go-back:hover {
     color: #ffb703;
 }
+.input-errors{
+    color: red;
+}
 
 @media screen and (max-width: 600px) {
     .top_head {

@@ -7,21 +7,25 @@ const Tasks = () => {
   const Userdata = [
     {
       "sn": 1,
+      "date": "01-17-2023",
       "tasks": "creating a react table",
       "status": "done",
     },
     {
       "sn": 2,
+      "date": "01-17-2023",
       "tasks": "fixing error of task table",
       "status": "Hold",
     },
     {
       "sn": 3,
+      "date": "01-17-2023",
       "tasks": "validation using formik",
       "status": "on process",
     },
     {
       "sn": 4,
+      "date": "01-17-2023",
       "tasks": "fetching data from api",
       "status": "carried over",
     },

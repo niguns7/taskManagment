@@ -3,40 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import './Table.css';
 import Tanstacktable from './Tanstack_table/Tanstacktable';
 import axios from 'axios';
+import { useFormik } from 'formik';
+import Tableschema from './Tableschema';
 
 const Table = () => {
-
-    const [sn, setSn] = useState('');
-    const [date, setDate] = useState('');
-    const [task, setTask] = useState('');
-    const [time, setTime] = useState('');
-    const [timeTaken, setTimetaken] = useState('');
-    const [status, setStatus] = useState('');
-
-    const resetHandler = () => {
-        setSn("");
-        setDate("");
-        setTask("");
-        setTime("");
-        setTimetaken("");
-        setStatus("");
-    }
-
-    const addTask = (e) => {
-        e.preventDefault();
-
-        const submitTask = {
-            sn: sn,
-            date: date,
-            task: task,
-            time: time,
-            timeTaken: timeTaken,
-            status: status,
-        }
-        setUdata([...udata, submitTask]);
-        resetHandler();
-        Postdata();
-    };
 
     const navigate = useNavigate();
     const Goback = () => {
@@ -44,35 +14,65 @@ const Table = () => {
         navigate(path)
     }
 
-    //axios get request
+    const addTask = (actions, e) => {
+        e.preventDefault();
+
+        const submitTask = {
+            sn: values.sn,
+            date: values.date,
+            task: values.task,
+            time: values.time,
+            timeTaken: values.timeTaken,
+            status: values.status,
+        }
+        setUdata([...udata, submitTask]);
+        actions.resetForm();
+        Postdata();
+    };
+
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues: {
+            sn: '',
+            date: '',
+            task: '',
+            time: '',
+            timeTaken: '',
+            status: '',
+        },
+        validationSchema: Tableschema,
+        addTask,
+    });
+
+    // //axios get request
     const [udata, setUdata] = useState([]);
 
-    useEffect(() => {
-      axios.get('https://1b66-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks')
-        .then(response => {
-          setUdata(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+     useEffect(() => {
+        axios.get('https://330c-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks')
+            .then(response => {
+                setUdata(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, []);
 
     //axios post request
     const Postdata = () => {
-        axios.post('https://1b66-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks',
+        axios.post('https://330c-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks',
             {
-                sn: sn,
-                date: date,
-                task: task,
-                time: time,
-                timeTaken: timeTaken,
-                status: status,
+                sn: values.sn,
+                date: values.date,
+                task: values.task,
+                time: values.time,
+                timeTaken: values.timeTaken,
+                status: values.status,
             }).then(Response => console.log(Response)).catch(Error => console.log(Error));
     }
+    console.log(errors)
 
     return (
         <>
-            <div className='task-table'>
+            <div className='task-table' onSubmit={handleSubmit}>
                 <div className='go-back'>
                     <h1 onClick={Goback}>
                         &#60; Go back
@@ -84,46 +84,67 @@ const Table = () => {
                         <div className='input-field'>
 
                             <input
-                                id='sn'
                                 placeholder='sn'
-                                value={sn}
-                                onChange= {(e) => setSn(e.target.value)}
+                                value={values.sn}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name= "sn"
+                                id='sn'
                                 type='text'
                             />
                             <input
-                                id='date'
                                 placeholder='date'
-                                value={date}
-                                onChange= {(e) => setDate(e.target.value)}
+                                value={values.date}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name= "date"
+                                id='date'
                                 type='date'
+                                className={errors.date && touched.date ? "input-errors" : " "} 
                             />
                             <input
+                                placeholder='Task'
+                                value={values.task}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name= "task"
                                 id='task'
-                                placeholder='task'
-                                value={task}
-                                onChange= {(e) => setTask(e.target.value)}
                                 type='text'
+                                className={errors.task && touched.task ? "input-errors" : " "} 
                             />
                             <input
-                                id='time'
                                 placeholder='estimated time'
-                                value={time}
-                                onChange= {(e) => setTime(e.target.value)}
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name= "time"
+                                id='time'
                                 type='text'
+                                className={errors.time && touched.time ? "input-errors" : " "} 
                             />
                             <input
+                                placeholder='Time taken'
+                                value={values.timeTaken}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name= "timeTaken"
                                 id='timeTaken'
-                                placeholder='timeTaken'
-                                value={timeTaken}
-                                onChange= {(e) => setTimetaken(e.target.value)}
                                 type='text'
+                                className={errors.timeTakeb && touched.timeTaken ? "input-errors" : " "} 
                             />
-                            <select id="stauts" name="stauts" placeholder='status' value={status} onChange= {(e) => setStatus(e.target.value)}>
-                                <option >done</option>
-                                <option >on process</option>
-                                <option >carries over</option>
-                                <option >hold</option>
-                                <option >to do </option>
+                            <select 
+                                id="stauts" 
+                                name="stauts" 
+                                placeholder='status' 
+                                value={values.status} 
+                                onBlur={handleBlur} 
+                                onChange={handleChange} 
+                                className={errors.status && touched.status ? "input-errors" : " "} >
+                                    <option >done</option>
+                                    <option >on process</option>
+                                    <option >carries over</option>
+                                    <option >hold</option>
+                                    <option >to do </option>
                             </select>
 
                         </div>

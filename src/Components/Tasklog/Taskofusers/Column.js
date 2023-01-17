@@ -4,11 +4,14 @@ export const Column = [
         accessor: 'sn'
     },
     {
+        Header: 'Date',
+        accessor: 'date',
+    },
+    {
         Header: 'Tasks',
         accessor: 'tasks',
     },
     {
-        width: 20,
         Header: 'Status',
         accessor: 'status',
     },
