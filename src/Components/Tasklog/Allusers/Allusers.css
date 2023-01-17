@@ -1,0 +1,20 @@
+.allusers-container{
+    margin-top: 5vh;
+    width: 100%;
+    height: 110vh;
+    place-items: center;
+}
+.displayuser-card{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7vh;
+    margin-top: 2vh;    
+    justify-content: center;
+} 
+@media screen and (max-width: 600px) {
+    .displayuser-card{
+        margin-left: 5.5vh;
+    }
+}
+
+

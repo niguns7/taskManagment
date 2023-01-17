@@ -1,0 +1,31 @@
+.topheading{
+    color: #219ebc;
+    text-align: center;
+    margin-top: 1vh;
+    font-size: 4vh;
+    font-weight: 500;
+}
+
+.personal-infoo h1{
+    text-align: center;
+    color: #219ebc;
+    font-size: 3vh;
+    font-weight: 600;
+    margin-top: 4vh;
+}
+
+.personal-infoo h2{
+    display: block;
+    text-align: center;
+    margin: 4vh;
+}
+.user-cardss h5{
+    text-align: center;
+    margin-top: 3vh;
+    color: #219ebc;
+    font-weight: 500;
+}
+.user-cardss h5:hover{
+    color: #ffb703;
+    cursor: pointer;
+}

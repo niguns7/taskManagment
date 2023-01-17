@@ -1,0 +1,48 @@
+.alluser-card{
+    width: 40vh;
+    height: 40vh;
+    background-color:  rgb(244, 244, 244);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    border-radius: 2vh;
+}
+.allcard-items{
+    display: grid;
+    place-items: center;
+}
+.allcard-items lable {
+    margin-top: 2vh;
+    font-size: 3vh;
+    font-weight: 500;
+    color: #219ebc;
+}
+.allcard-items h1{
+   margin-top: 2vh;
+}
+.allcard-items h2{
+    margin-top: 1vh;
+    font-weight: 500;
+    color: #219ebc;
+ }
+ .allcard-items h2:hover{
+    font-weight: 700;
+    color: #ffb703;
+    cursor: pointer;
+ }
+.allcard-items img{
+    padding-top: 2vh;
+    width: 16vh;
+}
+@media screen and (max-width: 600px) {
+    .alluser-card{
+        width: 35vh;
+        height: 35vh;
+    }
+    .allcard-items lable {
+        margin-top: 1vh;
+        font-size: 3vh;
+    }
+    .allcard-items img{
+        padding-top: 2vh;
+        width: 13vh;
+    }
+}

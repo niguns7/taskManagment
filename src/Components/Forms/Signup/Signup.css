@@ -1,0 +1,80 @@
+.signup-container{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: auto;
+}
+.signup-container span{
+    font-family: 'Moon Dance', cursive;
+    font-size: 7vh;
+    font-weight: 800;
+    color: #219ebc;
+    margin-left: 10vh;
+    margin-top: 10vh;
+    cursor: pointer;   
+}
+.signup-body {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    margin-top: 15vh;
+}
+.signup-body input{
+    margin-top: 1vh;
+    border: 2px solid #d3d3d3;
+    outline: none;
+    width: 80vh;
+    padding: 2vh;
+}
+.signup-body input:focus{
+    border: 2px solid rgb(73, 73, 73);
+}
+.signup-body h1{
+    font-size: 2vh;
+    margin-top: 4vh;
+    opacity: 0.7;
+}
+.signup-body lable{
+    font-size: 6vh;
+    font-weight: 300;
+}
+.signup-body button{
+    width: 80vh;
+    padding:1.5vh;
+    background-color: #219ebc;
+    margin-top: 1.5vh;
+}
+.signup-body button:hover{
+    background-color: #ffb703;
+}
+button:disabled{
+    opacity: 0.35;
+}
+@media screen and (max-width: 600px) {
+    .signup-body input{
+        width: 40vh;
+        padding: 1.4vh;
+    }
+    .signup-body button{
+        width: 40vh;
+        padding:1.5vh;
+        background-color: #219ebc;
+        margin-top: 1.4vh;
+    }
+    .signup-body h1{
+        font-size: 1.4vh;
+        margin-top: 4vh;
+        opacity: 0.7;
+    }
+    .signup-body lable{
+        font-size: 4vh;
+        font-weight: 300;
+    }
+    .signup-container span{
+        font-size: 5vh;
+        font-weight: 800;
+        margin-left: 3vh;
+        margin-top: 3vh;
+    }
+  }

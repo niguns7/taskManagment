@@ -1,0 +1,98 @@
+.user-container{
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+}
+.user-tasklog h2{
+    text-align: center;
+    padding-top: 4vh;
+    font-size: 3vh;
+    font-weight: 600;
+    color: #219ebc;
+}
+
+.user-cardss{
+    margin-top: 6vh;
+    width: 60vh;
+    height: 75vh;
+    background-color: rgb(244, 244, 244);
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+.user-cards h2{
+    text-align: center ;
+    padding-top: 10px;
+}
+.user-progressbar {
+   padding-top: 3vh;
+}
+.personal-info {
+    padding-top: 4vh;
+}
+.personal-info h2 {
+    color: black;
+    font-size: 10px;
+}
+.personal-info h1 {
+    text-align: center;
+    color: #219ebc;
+    font-size: 3vh;
+    font-weight: 600;
+}
+.user-progressbar {
+    margin-left: 50vh;
+    display: block;
+}
+.user-cardss {
+    position: relative;
+}
+.task-progress {
+	background-color: #d8d8d8;
+	border-radius: 20px;
+	position: relative;
+	margin: 15px 0;
+	height: 15px;
+	width: 250px;
+}
+.task-progress-done {
+	background: #219ebc;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+	border-radius: 20px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 0;
+	opacity: 0;
+	transition: 1s ease 0.3s;
+}
+.user-progress h1 {
+    margin-top: 2vh;
+    text-align: center;
+    font-size: 3vh;
+    font-weight: 600;
+    color: #219ebc;
+}   
+.task-progree-bar {
+    margin-left: 15vh;
+    margin-top: 5vh;
+}
+.users-avtar{
+    max-width: 10vh;
+    margin: 0 auto;
+    margin-top: 2vh;
+}
+@media screen and (max-width: 600px) {
+    .user-cardss{
+        margin-top: 6vh;
+        width: 40vh;
+        height: 65vh;
+    }
+    .task-progree-bar {
+        margin-top: 2vh;
+        margin-left: 7vh;
+    }
+    
+}

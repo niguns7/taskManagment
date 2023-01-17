@@ -1,0 +1,64 @@
+.log-container{
+    display: grid;
+    height: auto;
+    width: auto;
+    place-items: center;
+}
+.log-card{
+    width: 120vh;
+    height: 73vh;
+    background-color: rgb(244, 244, 244);
+    margin-top: 15vh;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 32px, rgba(0, 0, 0, 0.22) 0px 5px 5px;
+}
+.log-card img{
+    width: 60vh;
+    height: 73vh;
+}
+.log{
+    display: flex;
+}
+.log h1{
+    font-size: 5vh;
+    font-weight: 700;
+    margin-left: 4vh;
+    padding-top: 7vh;
+    color: #219ebc;
+}
+.log span{
+    font-size: 1.8vh;
+    margin-left: 4vh;
+    padding-top: 4vh;
+    color: #959595;
+    font-weight: 400;
+}
+.log-inputs{
+    display: grid;
+    margin-top: 3vh;
+    margin-left: 4vh;
+    gap: 2vh;
+}
+
+.log-inputs input{
+    padding: 1.5vh;
+    width: 50vh;
+    border: 1px solid #d3d3d3;
+    border-radius: 1vh;
+}
+.log-inputs input:focus{
+    border: 0.3px solid #094fcf;
+}
+.log-inputs button{
+    margin-top: 1vh;
+    padding: 1.3vh;
+    background-color: #219ebc;
+    color: #fff;
+    width: 20vh;
+    border-radius: 5vh;
+}
+.log-inputs button:hover{
+    background-color: #ffb703;
+}
+
+
+

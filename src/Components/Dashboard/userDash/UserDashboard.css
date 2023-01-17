@@ -1,0 +1,10 @@
+.Container {
+    color: white;
+}
+.userHeading {
+    background-color: #024363;
+    height: 8vh;
+    text-align: center;
+    font-size: 20px;
+    padding-top: 2vh;
+}

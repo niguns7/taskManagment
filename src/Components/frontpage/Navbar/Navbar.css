@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&family=Playfair+Display:wght@400;500&display=swap');
+.navbar{
+    width: 100%;
+    height: 10vh;
+    background-color: rgb(211, 209, 209);
+}
+.navbar span{
+    font-family: 'Moon Dance', cursive;
+    font-size: 7vh;
+    font-weight: 800;
+    color: #219ebc;
+    margin-left: 10vh;
+    cursor: pointer;   
+}
+.navbar-items{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4vh;
+    float: right;
+    margin-top: 3vh;
+    margin-right: 10vh;
+}
+.navbar-items h1{
+    font-weight: 400;
+    font-size: 2.5vh;
+    color: #219ebc;
+}
+.navbar-items button{
+    background-color: #219ebc;
+    color: white;
+    box-sizing: border-box;
+    padding: 1vh;
+    width: 13vh;
+    border-radius: 1vh;
+}
+.navbar-items button:hover{
+    background-color: #ffb703;
+    transition: 0.5s ease;
+}
+.navbar-items h1:hover{
+    color: #ffb703;
+    transition: 0.2s ease;;
+}
+@media screen and (max-width: 600px) {
+    .navbar-items h1{
+        display: none;
+    }
+    .navbar-items{
+        margin-right: 4vh;
+    }
+    .navbar span{
+        font-size: 6vh;
+        margin-top: 2vh;
+        margin-left: 3vh;
+    }
+}

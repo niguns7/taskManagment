@@ -1,0 +1,123 @@
+.Heading{
+    background-color: #024363;
+    height: 15vh;
+}
+.Heading h2{
+    color: white;
+    text-align: center;
+    margin-top: -8vh;
+    font-size: 2.5vh;
+    text-align: center;
+    margin-left: 6.7vh;
+}
+.Heading h3{
+    color: #32CD32;
+    text-align: center;
+}
+.avtar {
+    width: 10vh;
+    padding-top: 2vh;
+    margin-left: 2vh;
+}
+
+.Sidedrawer{
+    position: fixed;
+    width: 270px;
+    top:0;
+    height: 100vh;
+    background-color: #023047;
+    overflow:hidden;
+    transition:width .3s ease;
+    cursor:pointer;
+    box-shadow:4px 7px 20px rgba(0,0,0,.4);
+}
+
+.Sidedrawer ul{
+    display: grid;
+    gap: 3vh;
+    background-color: transparent;
+    padding-left: 4vh;
+    margin-top  : 30px;  
+}
+.Sidedrawer li{
+    font-size: 2.9vh;
+    font-weight: 500;
+    padding-left: 2vh;
+}
+.Sidedrawer li:hover{
+    color: #ffb703;
+}
+.admintop-nav {
+    margin-top: -5vh;
+    width: 100%;
+    height: 10.7vh;
+    background-color:  rgb(235, 235, 235);
+    text-align: center;
+}
+.admintop-nav h1{
+    font-size: 3vh;
+    font-weight: 600;
+    text-align: center;
+    color: #024363;
+    padding-top: 4vh;
+}
+.display-cards{
+    display: flex;
+    margin-left: 40vh;
+}
+.icon{
+    display: inline-flex;
+}
+@media screen and (max-width: 600px) {
+    .Sidedrawer{
+        position: fixed;
+        width: 16vh;
+        top:0;
+        height: 100vh;
+        background-color: #023047;
+        overflow:hidden;
+        transition:width .3s ease;
+        cursor:pointer;
+        box-shadow:4px 7px 20px rgba(0,0,0,.4);
+    }
+    .Sidedrawer ul{
+        background-color: transparent;
+        font-size: 12px;
+        color: white;
+        padding-left: 1vh;
+        margin-top  : 30px;  
+    }
+    .Sidedrawer ul:hover{
+        font-size: 12px;
+        color: #ffb703;
+    }
+    .Heading img {
+        width: 6vh;
+        margin-left: 4.5vh;
+        text-align: center;
+    }
+    .admintop-nav {
+        height: 9vh;
+        background-color:  rgb(235, 235, 235);
+        text-align: center;
+    }
+    .Heading h2{
+        margin-top: 1.8vh;
+        font-size: 2vh;
+    }
+    .Heading h3{
+        color: #32CD32;
+        font-size: 1.4vh;
+    }
+    .admintop-nav h1{
+        text-align: center;
+        font-size: 2.5vh;
+        margin-left: 12vh;
+        margin-top: -6vh;
+    }
+    .display-cards{
+        display: grid; 
+        grid-gap: 12px;
+    }
+    
+}

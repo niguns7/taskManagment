@@ -1,0 +1,110 @@
+.task-table{
+    margin-top: 1vh;
+}
+.top_head {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 5vh;
+    color: #219ebc;
+    font-weight: 600;
+    margin-top: 3vh;
+}
+
+.input-field input {
+    width: 20vh;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+select {
+    width: 20vh;
+    height: 5.5vh;
+    border-radius: 1vh;
+    padding-left: 1vh;
+}
+.table-row input {
+    margin-left: 1vh;
+}
+.table-row {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+}
+
+.table_container {
+    margin-top: 5vh;
+}
+
+.table-button {
+    width: 15vh;
+    padding: 1.4vh;
+    color: #fff;
+    background-color: #219ebc;
+    border-radius: 10px;
+    border-color: #219ebc;
+    margin-top: 5vh;
+}
+
+.table-button:hover {
+    background-color: #ffb703;
+}
+
+
+.middle-heading {
+    text-align: center;
+    margin-top: 5vh;
+    color: #219ebc;
+}
+
+.go-back {
+    margin-top: 5vh;
+    margin-left: 8vh;
+    color: #219ebc;
+    font-size: 2vh;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.go-back:hover {
+    color: #ffb703;
+}
+
+@media screen and (max-width: 600px) {
+    .top_head {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 3vh;
+        color: #219ebc;
+        font-weight: 600;
+        margin-top: 2vh;
+    }
+    .table_container {
+        margin-top: 3vh;
+    }
+    .input-field {
+        display: grid;
+        grid-gap: 10px;
+        height: auto;
+        width: auto;
+        place-items: center;
+    }
+    .go-back {
+        display: none;
+    }
+    .table-button {
+        width: 13vh;
+        padding: 1vh;
+        color: #fff;
+        background-color: #219ebc;
+        border-radius: 10px;
+        border-color: #219ebc;
+        margin-top: 3vh;
+    }
+    select {
+        width: 15vh;
+        height: 4vh;
+        border-radius: 1vh;
+    }
+}
