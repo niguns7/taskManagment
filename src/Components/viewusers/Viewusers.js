@@ -1,22 +1,120 @@
-import React, {useMemo} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './Viewusers.css';
-import Userdata from './Userdata.json';
-import { Column } from './Columns';
+// import { Column } from './Columns';
 import { useTable } from 'react-table';
+import axios from 'axios';
+import { MdDelete } from 'react-icons/md'
 
 const Viewusers = () => {
 
-    const columns = useMemo(() => Column,[]);
-    const data = useMemo(() => Userdata, []);
-    const tableInstance = useTable({columns,data});
+    //get request
+    const [userdata, setUserdata] = useState([])
+    useEffect(() => {
+
+        axios.get('http://192.168.100.135:8000/users')
+            .then(response => {
+                setUserdata(response?.data?.data)
+                console.log("data", response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, [])
+
+    useEffect(() => {
+        const tempData = userdata.length > 0 ? userdata.map((items) => {
+            return {
+                id: items.id,
+                sn: items.id,
+                username: items.username,
+                email: items.email,
+                password: items.password,
+                contactNo: items.contactNo,
+                roles: items.roles,
+                designation: items.designation,
+                action: items.id
+            }
+        }) : []
+        console.log("tempData", tempData)
+    }, [userdata])
 
 
-    const { 
+
+    const Column = [
+        {
+            Header: 'sn',
+            accessor: 'id'
+        },
+        {
+            Header: 'Name',
+            accessor: 'username',
+        },
+        {
+            Header: 'Email',
+            accessor: 'email',
+        },
+        {
+            Header: 'Password',
+            accessor: 'password',
+        },
+        {
+            Header: 'Contact no',
+            accessor: 'contactNo',
+        },
+        {
+            Header: 'Role',
+            accessor: 'roles',
+        },
+        {
+            Header: 'Designation',
+            accessor: 'designation',
+        },
+        {
+            width: 90,
+            Header: 'Action',
+            accessor: 'action',
+            Cell: ({ value }) => {
+                return (
+                    <div
+                        className="action-content"
+                        onClick={() => {
+                            deleteTask(value);
+                        }}>
+                        <div className='del-icon'>
+                            <MdDelete size={20} />
+                        </div>
+                    </div>
+                );
+            }
+        },
+    ]
+
+    const [deleteuser, setDeleteuser] = useState()
+
+    const deleteTask = (id) => {
+        axios.delete(`http://192.168.100.135:8000/tasks/${id}`)
+        .then(response => {
+                if(response.status === 200){
+                    setDeleteuser(userdata.filter(action => action.id === id))
+                    console.log(response, 'resonse')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+    }
+
+
+    const columns = useMemo(() => Column, []);
+    const data = useMemo(() => userdata, [userdata]);
+    const tableInstance = useTable({ columns, data });
+
+
+    const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow, } = tableInstance; 
+        prepareRow, } = tableInstance;
 
 
     return (

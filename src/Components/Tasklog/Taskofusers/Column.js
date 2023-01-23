@@ -9,7 +9,7 @@ export const Column = [
     },
     {
         Header: 'Tasks',
-        accessor: 'tasks',
+        accessor: 'task',
     },
     {
         Header: 'Status',

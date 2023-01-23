@@ -5,7 +5,9 @@
     font-size: 4vh;
     font-weight: 500;
 }
-
+.personal-infoo img{
+    border-radius: 60%;
+}
 .personal-infoo h1{
     text-align: center;
     color: #219ebc;

@@ -14,7 +14,8 @@
     width: 20vh;
     padding: 10px;
     border-radius: 10px;
-    border: 1px solid black;
+    border: 1px solid;
+    outline: none;
 }
 
 select {
@@ -70,8 +71,9 @@ select {
 .go-back:hover {
     color: #ffb703;
 }
-.input-errors{
-    color: red;
+.input-field .input-errors {
+    border-color: red;
+    border: 1.5px solid red;
 }
 
 @media screen and (max-width: 600px) {

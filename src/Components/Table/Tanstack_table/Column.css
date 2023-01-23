@@ -1,11 +1,21 @@
 .del-icon{
-    display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
+    color: #219ebc;
+}
+.edit-icon{
     color: #219ebc;
 }
 .del-icon:hover{
     color: #ffb703;
     cursor: pointer ;
+}
+.edit-icon:hover{
+    color: #ffb703;
+    cursor: pointer ;
+}
+.items{
+    display: flex;
+    gap: 2vh;
+    flex-wrap: nowrap;
+    justify-content: center;
+ 
 }

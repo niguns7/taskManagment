@@ -1,6 +1,7 @@
-import React,{useState}from 'react';
+import React,{useState, useEffect}from 'react';
 import './Tasklog.css';
-import avtar from '../../assets/Avtar.png'
+import axios from 'axios';
+// import avtar from '../../assets/man.jpg'
 import { useNavigate } from 'react-router-dom';
 
 const Tasklog = () => {
@@ -22,14 +23,29 @@ const Tasklog = () => {
 
   let done = 70;
   
-  const Uuser = [
-    {
-      sn: 1,
-      username: 'dummy',
-      email: 'jpt@test.com',
-      taskdone: 3,
-    },
-  ]
+  // const Uuser = [
+  //   {
+  //     sn: 1,
+  //     username: 'dummy',
+  //     email: 'jpt@test.com',
+  //     taskdone: 3,
+  //   },
+  // ]
+
+  const [useritems, setUseritems] = useState([])
+
+  useEffect(() => {
+      axios.get('https://jsonplaceholder.typicode.com/photos')
+      .then(Response => {
+          {setUseritems(Response.data)}
+          console.log(Response.data)
+      })
+      .catch(error => {
+          console.log(error);
+      })
+  }, [])
+
+  const slicedate = useritems.slice(0,1)
 
   return (
     <>
@@ -37,17 +53,17 @@ const Tasklog = () => {
     <h1 className='topheading'>Tasklog of users</h1>
     <div className='user-container'>
           {
-            Uuser.map((uUser) => {
+            slicedate.map((uUser) => {
               return (
                 <>
                   <div className='user-cardss'>
                     <div className='personal-infoo'>
                       <h1>Personal information</h1>      
-                      <img src={avtar} className='users-avtar' alt='lmao' />
-                      <h2> <b>Id:</b> {uUser.sn}</h2>
-                      <h2> <b>username:</b> {uUser.username}</h2>
-                      <h2> <b>Email:</b>  {uUser.email}</h2>
-                      <h2>  <b>Taskdone:</b> {uUser.taskdone}</h2>
+                      <img src={uUser.url} className='users-avtar' alt='lmao' />
+                      <h2> <b>Id:</b> {uUser.id}</h2>
+                      <h2> <b>username:</b> {uUser.id}</h2>
+                      <h2> <b>Email:</b>  {uUser.title}</h2>
+                      <h2>  <b>Taskdone:</b> {uUser.id}</h2>
                     </div>
                     <div className='user-progress'>
                       <h1> Your progress bar</h1>

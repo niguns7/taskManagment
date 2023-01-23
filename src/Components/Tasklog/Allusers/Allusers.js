@@ -1,54 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Allusers.css';
 import AllusersCard from './Cards/AllusersCard';
-import avtar from '../../../assets/Avtar.png';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Allusers = () => {
-    const userItems = [
-        {
-            Image: { avtar },
-            sn: 1,
-            name: 'john david',
-        },
-        {
-            Image: { avtar },
-            sn: 2,
-            name: 'tom Cruise',
-        },
-        {
-            Image: { avtar },
-            sn: 3,
-            name: 'Antionio greezman',
-        },
-        {
-            Image: { avtar },
-            sn: 4,
-            name: 'Valentino rossi',
-        },
-        {
-            Image: { avtar },
-            sn: 5,
-            name: 'Lional Messi',
-        },
-        {
-            Image: { avtar },
-            sn: 6,
-            name: 'De paul',
-        },
-        {
-            Image: { avtar },
-            sn: 7,
-            name: 'De maria',
-        },
-        {
-            Image: { avtar },
-            sn: 8,
-            name: 'Salman khan',
-        },
 
+    const [useritems, setUseritems] = useState([])
 
-    ]
+    useEffect(() => {
+        axios.get('https://jsonplaceholder.typicode.com/photos')
+        .then(Response => {
+            {setUseritems(Response.data)}
+            console.log(Response.data)
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }, [])
+
+    const slicedata = useritems.slice(0,16)
 
     const navigate = useNavigate();
 
@@ -63,11 +34,11 @@ const Allusers = () => {
             <div className='allusers-container'>
                 <div className='displayuser-card'>
                     {
-                        userItems.map((userdata) => {
+                        slicedata.map((userdata) => {
                             return <AllusersCard
-                                image={userdata.Image}
-                                Id={userdata.sn}
-                                name={userdata.name}
+                                image={userdata.url}
+                                Id={userdata.id}
+                                name={userdata.title}
                             />
                         })
                     }

@@ -37,7 +37,8 @@ export const Column = [
               <div
                 className="action-content"
                 onClick={() => {
-                    axios.delete(`https://1b66-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks/${value}`)
+                    axios.delete(`https://b088-27-34-49-218.in.ngrok.io/tasks/${value}`)
+                    .then(Response => console.log(Response))
                 }}>
                 <div className='del-icon'>
                 <MdDelete size={20} />

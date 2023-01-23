@@ -4,9 +4,30 @@ import './Table.css';
 import Tanstacktable from './Tanstack_table/Tanstacktable';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import Tableschema from './Tableschema';
+import * as yup from 'yup';
+
+
 
 const Table = () => {
+
+
+    const Tableschema = yup.object().shape({
+        sn: yup.number().positive().required('Required'),
+        date: yup.string().required('Required'),
+        task: yup.string().required('Required'),
+        time: yup.string().required('Required'),
+        timeTaken: yup.string().required('Required'),
+        status: yup.string().required('Required'),
+    });
+
+    const iniitialValues = {
+        sn: '',
+        date: '',
+        task: '',
+        time: '',
+        timeTaken: '',
+        status: '',
+    }
 
     const navigate = useNavigate();
     const Goback = () => {
@@ -14,51 +35,34 @@ const Table = () => {
         navigate(path)
     }
 
-    const addTask = (actions, e) => {
-        e.preventDefault();
-
-        const submitTask = {
-            sn: values.sn,
-            date: values.date,
-            task: values.task,
-            time: values.time,
-            timeTaken: values.timeTaken,
-            status: values.status,
-        }
-        setUdata([...udata, submitTask]);
-        actions.resetForm();
+    const onSubmit = () => {
         Postdata();
+        resetForm({ ...iniitialValues })
+        fetchData();
     };
 
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-        initialValues: {
-            sn: '',
-            date: '',
-            task: '',
-            time: '',
-            timeTaken: '',
-            status: '',
-        },
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm } = useFormik({
+        initialValues: iniitialValues,
         validationSchema: Tableschema,
-        addTask,
+        onSubmit
     });
 
-    // //axios get request
     const [udata, setUdata] = useState([]);
 
-     useEffect(() => {
-        axios.get('https://330c-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks')
+    const fetchData = () => {
+        axios.get('http://192.168.100.135:8000/tasks')
             .then(response => {
-                setUdata(response.data);
+                setUdata(response?.data?.data);
             })
             .catch(error => {
                 console.log(error);
             });
-    }, []);
+    };
+    useEffect(fetchData, [])
 
-    //axios post request
+    // axios post request
     const Postdata = () => {
-        axios.post('https://330c-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks',
+        axios.post('http://192.168.100.135:8000/tasks',
             {
                 sn: values.sn,
                 date: values.date,
@@ -66,98 +70,112 @@ const Table = () => {
                 time: values.time,
                 timeTaken: values.timeTaken,
                 status: values.status,
-            }).then(Response => console.log(Response)).catch(Error => console.log(Error));
+            }).then(
+                Response => console.log('Response')
+            ).catch(
+                Error => console.log(Error)
+            );
     }
-    console.log(errors)
+
 
     return (
         <>
-            <div className='task-table' onSubmit={handleSubmit}>
-                <div className='go-back'>
-                    <h1 onClick={Goback}>
-                        &#60; Go back
-                    </h1>
-                </div>
-                <h1 className='top_head'>  Submit your task here </h1>
-                <div className='table_container'>
-                    <div className='table-row'>
-                        <div className='input-field'>
+            <form onSubmit={handleSubmit} autoComplete="off">
+                <div className='task-table' >
+                    <div className='go-back'>
+                        <h1 onClick={Goback}>
+                            &#60; Go back
+                        </h1>
+                    </div>
+                    <h1 className='top_head'>  Submit your task here </h1>
+                    <div className='table_container'>
+                        <div className='table-row'>
+                            <div className='input-field'>
 
-                            <input
-                                placeholder='sn'
-                                value={values.sn}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name= "sn"
-                                id='sn'
-                                type='text'
-                            />
-                            <input
-                                placeholder='date'
-                                value={values.date}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name= "date"
-                                id='date'
-                                type='date'
-                                className={errors.date && touched.date ? "input-errors" : " "} 
-                            />
-                            <input
-                                placeholder='Task'
-                                value={values.task}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name= "task"
-                                id='task'
-                                type='text'
-                                className={errors.task && touched.task ? "input-errors" : " "} 
-                            />
-                            <input
-                                placeholder='estimated time'
-                                value={values.email}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name= "time"
-                                id='time'
-                                type='text'
-                                className={errors.time && touched.time ? "input-errors" : " "} 
-                            />
-                            <input
-                                placeholder='Time taken'
-                                value={values.timeTaken}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name= "timeTaken"
-                                id='timeTaken'
-                                type='text'
-                                className={errors.timeTakeb && touched.timeTaken ? "input-errors" : " "} 
-                            />
-                            <select 
-                                id="stauts" 
-                                name="stauts" 
-                                placeholder='status' 
-                                value={values.status} 
-                                onBlur={handleBlur} 
-                                onChange={handleChange} 
-                                className={errors.status && touched.status ? "input-errors" : " "} >
+                                <input
+                                    placeholder='sn'
+                                    value={values.sn}
+                                    onChange={handleChange}
+                                    name='sn'
+                                    id='sn'
+                                    type='number'
+                                    className={errors.sn && touched.sn ? "input-errors" : ""}
+                                // {...getFieldProps("sn")}
+                                />
+                                {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                <input
+                                    placeholder='date'
+                                    value={values.date}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    id='date'
+                                    name='date'
+                                    type='date'
+                                    className={errors.date && touched.date ? "input-errors" : ""}
+
+                                />
+                                {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                <input
+                                    placeholder='Task'
+                                    value={values.task}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='task'
+                                    id='task'
+                                    type='text'
+                                    className={errors.task && touched.task ? "input-errors" : ""}
+                                />
+                                {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                <input
+                                    placeholder='Estimated time(in min)'
+                                    value={values.time}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='time'
+                                    id='time'
+                                    type='text'
+                                    className={errors.time && touched.time ? "input-errors" : ""}
+                                />
+                                {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+
+                                <input
+                                    placeholder='Time taken(in min)'
+                                    value={values.timeTaken}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='timeTaken'
+                                    id='timeTaken'
+                                    type='text'
+                                    className={errors.timeTaken && touched.timeTaken ? "input-errors" : ""}
+                                />
+                                {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                <select
+                                    value={values.status}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='status'
+                                    id='status' >
+                                    {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
                                     <option >done</option>
                                     <option >on process</option>
                                     <option >carries over</option>
                                     <option >hold</option>
                                     <option >to do </option>
-                            </select>
+                                </select>
 
+
+                            </div>
+                            <button className='table-button' type='submit' onClick={onsubmit}>Add Task</button>
                         </div>
-                        <button className='table-button' onClick={addTask}>Add Task</button>
+
+                        <h1 className='middle-heading'>your tasks will displayed here</h1>
+
                     </div>
-
-                    <h1 className='middle-heading'>your tasks will displayed here</h1>
-
+                    <Tanstacktable usersData={udata} />
                 </div>
-                <Tanstacktable usersData={udata} />
-            </div>
+            </form>
         </>
     )
 }
 
-export default Table
+export default Table;

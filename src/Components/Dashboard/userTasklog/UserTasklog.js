@@ -15,7 +15,7 @@ const UserTasklog = () => {
     setStyle(newStyle);
   }, 100)
 
-  let done = 70;
+  let done = 80;
 
   const Uuser = [
     {

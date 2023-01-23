@@ -13,15 +13,6 @@ const Table = () => {
     const [timeTaken, setTimetaken] = useState('');
     const [status, setStatus] = useState('');
 
-    const resetHandler = () => {
-        setSn("");
-        setDate("");
-        setTask("");
-        setTime("");
-        setTimetaken("");
-        setStatus("");
-    }
-
     const addTask = (e) => {
         e.preventDefault();
 
