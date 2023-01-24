@@ -14,8 +14,17 @@ import Allusers from "./Components/Tasklog/Allusers/Allusers";
 import Signup from "./Components/Forms/Signup/Signup";
 import Log from './Components/Forms/Login/Log';
 import Tasks from "./Components/Tasklog/Taskofusers/Tasks";
+import Authuser from "./Components/Forms/Authuser";
+
 
 function App() {
+  const {getToken} = Authuser()
+
+  if(!getToken()){
+    return <Log/>
+  }
+
+
   return (
     <Routes>
       <Route exact path="/" element={<Frontpage />}/>

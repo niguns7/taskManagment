@@ -4,7 +4,8 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 // min 5 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.
 
 const Basicschemas = yup.object().shape({
-    email: yup.string().email('enter a valid email').required('Required'),
+    // email: yup.string().email('enter a valid email').required('Required'),
+    username: yup.string().required('Required'),
     password: yup
         .string()
         .matches(passwordRules, { message: 'please enter a valid password provided by admin' })

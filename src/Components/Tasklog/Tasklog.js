@@ -37,9 +37,9 @@ const Tasklog = () => {
   useEffect(() => {
       axios.get('https://jsonplaceholder.typicode.com/photos')
       .then(Response => {
-          {setUseritems(Response.data)}
+          setUseritems(Response.data)
           console.log(Response.data)
-      })
+      })  
       .catch(error => {
           console.log(error);
       })

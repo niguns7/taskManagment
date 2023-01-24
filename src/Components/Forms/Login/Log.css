@@ -59,6 +59,10 @@
 .log-inputs button:hover{
     background-color: #ffb703;
 }
+.log-inputs .input-errors {
+    border-color: red;
+    border: 1.5px solid red;
+}
 
 
 

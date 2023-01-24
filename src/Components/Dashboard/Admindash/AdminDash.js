@@ -56,6 +56,8 @@ const AdminDash = () => {
 
         <div className='admintop-nav'>
           <h1> Admin-Dashboard </h1>
+
+          {/* <button>Log-out</button> */}
         </div>
 
       </div>
