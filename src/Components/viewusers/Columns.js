@@ -7,7 +7,7 @@ export const Column = [
         accessor: 'id'
     },
     {
-        Header: 'Name',
+        Header: 'Username',
         accessor: 'username',
     },
     {

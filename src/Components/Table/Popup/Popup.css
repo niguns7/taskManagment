@@ -1,0 +1,97 @@
+.model-wrapper{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color:  rgba(0, 0, 0, 0.5);;
+}
+.popup-container{
+    position: relative;
+    display: grid;
+    height: auto;
+    width: auto;
+    place-items: center;
+}
+.pop-items{
+    margin-top: 14vh;
+    background-color: #e9e9e9;
+    width: 30vw;
+    height: 77vh;
+    border-radius: 1vh;
+}
+.head-itemss {
+    display: flex;
+    justify-content: space-between;
+    background-color: #d1d1d1;
+    height: 10vh;
+}
+.head-itemss h1 {
+    padding-top: 2vh;
+    color: #219ebc;
+    font-size: 25px;
+    font-weight: 500;
+    padding-left: 2vh;
+
+}
+.head-itemss i{
+    padding-top: 3vh;
+    color: #219ebc;
+    padding-right: 2vh;
+
+}
+.head-items {
+    display: flex;
+    justify-content: space-between;
+}
+.head-itemss i:hover{
+    color: #ffb703;
+    cursor: pointer;
+}
+.pop-inputs{
+    margin-top: 1vh;
+    display: grid;
+    height: auto;
+    width: auto;
+    place-items: center;
+}
+.pop-inputs input{
+    padding: 1.5vh;
+    border-radius: 1vh;
+    margin-top: 3vh;
+    outline: none;
+}
+
+.pop-inputs select {
+    padding: 1.5vh;
+    border-radius: 1vh;
+    margin-top: 3vh;
+    outline: none;
+    width: 15vw;
+    background-color: white;
+}
+.pop-inputs button{
+    background-color: #219ebc;
+    color: white;
+    width: 15vw;
+    padding: 1.5vh;
+    border-radius: 1vh;
+    margin-top: 3vh;
+}
+.pop-inputs button:hover{
+    background-color: #ffb703;
+    color: #000;
+    cursor: pointer;
+}
+.pop-inputs input[type=date] {
+    padding: 1.5vh;
+    border-radius: 1vh;
+    margin-top: 3vh;
+    outline: none;
+    width: 15vw;
+    background-color: white;
+  }
+  .input-field .input-errors {
+    border-color: red;
+    border: 1.5px solid red;
+}

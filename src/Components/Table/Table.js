@@ -5,10 +5,13 @@ import Tanstacktable from './Tanstack_table/Tanstacktable';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Authuser from '../Forms/Authuser';
 
 
 
 const Table = () => {
+    const {getToken} = Authuser()
+    const [loading,setLoading]=useState(false)
 
 
     const Tableschema = yup.object().shape({
@@ -16,7 +19,6 @@ const Table = () => {
         date: yup.string().required('Required'),
         task: yup.string().required('Required'),
         time: yup.string().required('Required'),
-        timeTaken: yup.string().required('Required'),
         status: yup.string().required('Required'),
     });
 
@@ -25,8 +27,9 @@ const Table = () => {
         date: '',
         task: '',
         time: '',
-        timeTaken: '',
-        status: '',
+        timeTaken: null,
+        remarks: null,
+        status: "to_do",
     }
 
     const navigate = useNavigate();
@@ -49,32 +52,46 @@ const Table = () => {
 
     const [udata, setUdata] = useState([]);
 
+
     const fetchData = () => {
-        axios.get('http://192.168.100.135:8000/tasks')
+        setLoading(true)
+        axios.get(`http://192.168.100.135:3000/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`,{ headers: headers } )
             .then(response => {
                 setUdata(response?.data?.data);
             })
             .catch(error => {
                 console.log(error);
-            });
+            }).finally((()=>{
+                setLoading(false)
+            }));
     };
     useEffect(fetchData, [])
 
     // axios post request
+
+    const headers = { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+    };
+    
+    const body = {
+        sn: values.sn,
+        date: values.date,
+        task: values.task,
+        time: values.time,
+        timeTaken: values.timeTaken,
+        remarks: values.remarks,
+        status: values.status
+    };
+    
     const Postdata = () => {
-        axios.post('http://192.168.100.135:8000/tasks',
-            {
-                sn: values.sn,
-                date: values.date,
-                task: values.task,
-                time: values.time,
-                timeTaken: values.timeTaken,
-                status: values.status,
-            }).then(
-                Response => console.log('Response')
-            ).catch(
-                Error => console.log(Error)
-            );
+        axios.post(`http://192.168.100.135:3000/tasks`, body, { headers: headers })
+    .then(response => {
+        console.log(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
     }
 
 
@@ -104,7 +121,6 @@ const Table = () => {
                                 />
                                 {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
                                 <input
-                                    placeholder='date'
                                     value={values.date}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -133,7 +149,7 @@ const Table = () => {
                                     onBlur={handleBlur}
                                     name='time'
                                     id='time'
-                                    type='text'
+                                    type='number'
                                     className={errors.time && touched.time ? "input-errors" : ""}
                                 />
                                 {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
@@ -149,6 +165,15 @@ const Table = () => {
                                     className={errors.timeTaken && touched.timeTaken ? "input-errors" : ""}
                                 />
                                 {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                <input
+                                    placeholder='Remarks'
+                                    value={values.remarks}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='remarks'
+                                    id='remarks'
+                                    type='text'
+                                />
                                 <select
                                     value={values.status}
                                     onChange={handleChange}
@@ -156,11 +181,12 @@ const Table = () => {
                                     name='status'
                                     id='status' >
                                     {/* {errors.sn && touched.sn && <p className="error">{errors.sn}</p>} */}
+                                    <option > status </option>
                                     <option >done</option>
-                                    <option >on process</option>
-                                    <option >carries over</option>
+                                    <option >on_process</option>
+                                    <option >carried_over</option>
                                     <option >hold</option>
-                                    <option >to do </option>
+                                    <option >to_do </option>
                                 </select>
 
 
@@ -171,7 +197,10 @@ const Table = () => {
                         <h1 className='middle-heading'>your tasks will displayed here</h1>
 
                     </div>
+                    {loading?<>Loading...</>:
                     <Tanstacktable usersData={udata} />
+                    }
+                    
                 </div>
             </form>
         </>

@@ -8,3 +8,42 @@
     font-size: 20px;
     padding-top: 2vh;
 }
+.welcome-container{
+    margin-left: 45vh;
+    border-radius: 1vh;
+    height: 25vh;
+    margin-top: 5vh;
+    width: 150vh;
+}
+.welcome-container img{
+    height: 25vh;
+    width: 25vh;
+}
+.wel-items {
+    display: flex;
+}
+.wel-items h1{
+    margin-left: 5vh;
+    margin-top: 1vh;
+    color: #024363;
+    font-size: 3vh;
+    font-weight: 600;
+}
+.wel-items p{
+    color: #024363;
+    margin-left: 5vh;
+    width: 80vh;
+    margin-bottom: 8vh;
+}
+.wel-items span{
+    color: #219ebc;
+    text-decoration: underline;
+    font-size: 2vh;
+}
+.wel-items span:hover{
+    cursor: pointer;
+
+}
+.well-text{
+    display: grid;
+}

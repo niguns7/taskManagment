@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AdminDash.css';
 import { useNavigate } from 'react-router-dom';
 import avtar from '../../../assets/Avtar.png';
 import AdminCards from './AdminCards';
-import {FaUserAlt} from 'react-icons/fa';
-import {FaTasks} from 'react-icons/fa';
-import {FaArrowAltCircleLeft} from 'react-icons/fa';
+import { FaUserAlt } from 'react-icons/fa';
+import { FaTasks } from 'react-icons/fa';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
+import Authuser from '../../Forms/Authuser';
+import axios from 'axios';
 
 const AdminDash = () => {
+  const { getToken } = Authuser()
+
+  const logout = () => {
+    sessionStorage.clear('token')
+    navigate('/')
+    console.log("logged out")
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${getToken()}`
+  };
+
+  const [pagedata, setPagedata] = useState([])
+  useState(() => {
+    axios.get('http://192.168.100.135:3000/users/admin/me/data', { headers: headers })
+      .then((res) => {
+        setPagedata(res?.data?.data)
+        console.log(res?.data?.data)
+      }).catch((err) => console.log(err))
+  })
+
+
+  const imgBaseUrl = `http://192.168.100.135:80/${pagedata.imageUrl}`;
+
+
   let navigate = useNavigate();
 
   const changepage = () => {
@@ -24,16 +52,16 @@ const AdminDash = () => {
   }
   const CardItems = [
     {
-      'img': <FaUserAlt size={70}/>,
-      'Title' : 'user',
-      'number': '4+',
+      'img': <FaUserAlt size={70} />,
+      'Title': 'Users',
+      'number': `Total users: ${pagedata.totalUser}`,
       onClick: () => pageChange2()
     },
-    
+
     {
-      'img': <FaTasks size={70}/>,
-      'Title' : 'Tasklog',
-      'number': '30',
+      'img': <FaTasks size={70} />,
+      'Title': 'Tasklog',
+      'number': `Total tasklog: ${pagedata.totalUser}`,
       onClick: () => changepage()
     },
   ]
@@ -44,21 +72,25 @@ const AdminDash = () => {
         <div className='Sidedrawer'>
 
           <div className='Heading'>
-            <img className='avtar' src={avtar} alt='adminavtar' />
-            <h2> John David </h2>
-            <h3> Admin </h3>
+            <div className='head-img'>
+              <img className='avtar' src={imgBaseUrl} alt='adminavtar' />
+            </div>
+            <div className='head-items'>
+              <h2>{pagedata.fullname}</h2>
+              <h3> Admin </h3>
+            </div>
           </div>
-            <ul>
-              <li onClick={changepage}><FaArrowAltCircleLeft className='icon'/> Tasklog</li>
-              <li onClick={pageChange}><FaArrowAltCircleLeft className='icon'/> Register</li>
-            </ul>
+          <ul>
+            <li onClick={changepage}><FaArrowAltCircleLeft className='icon' /> Tasklog</li>
+            <li onClick={pageChange}><FaArrowAltCircleLeft className='icon' /> Register</li>
+            <button onClick={logout}>Log-out</button>
+          </ul>
         </div>
 
         <div className='admintop-nav'>
           <h1> Admin-Dashboard </h1>
-
-          {/* <button>Log-out</button> */}
         </div>
+
 
       </div>
       <div className='display-items'>

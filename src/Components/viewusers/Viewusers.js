@@ -3,15 +3,22 @@ import './Viewusers.css';
 // import { Column } from './Columns';
 import { useTable } from 'react-table';
 import axios from 'axios';
-import { MdDelete } from 'react-icons/md'
+import { MdDelete } from 'react-icons/md';
+import Authuser from '../Forms/Authuser';
 
 const Viewusers = () => {
-
+    const{getToken} = Authuser()
     //get request
     const [userdata, setUserdata] = useState([])
+
+
+    const headers = { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+    };
     useEffect(() => {
 
-        axios.get('http://192.168.100.135:8000/users')
+        axios.get('http://192.168.100.135:3000/users/alluser', {headers:headers})
             .then(response => {
                 setUserdata(response?.data?.data)
                 console.log("data", response.data)
@@ -21,12 +28,11 @@ const Viewusers = () => {
             })
     }, [])
 
-    useEffect(() => {
-        const tempData = userdata.length > 0 ? userdata.map((items) => {
+    const tempData = userdata.length > 0 ? userdata.map((items) => {
             return {
                 id: items.id,
-                sn: items.id,
                 username: items.username,
+                fullname: items.fullname,
                 email: items.email,
                 password: items.password,
                 contactNo: items.contactNo,
@@ -35,18 +41,21 @@ const Viewusers = () => {
                 action: items.id
             }
         }) : []
-        console.log("tempData", tempData)
-    }, [userdata])
 
+        console.log("tempData", tempData)
 
 
     const Column = [
         {
-            Header: 'sn',
+            Header: 'Id',
             accessor: 'id'
         },
         {
-            Header: 'Name',
+            Header: 'Fullname',
+            accessor: 'fullname',
+        },
+        {
+            Header: 'Username',
             accessor: 'username',
         },
         {
@@ -78,7 +87,8 @@ const Viewusers = () => {
                     <div
                         className="action-content"
                         onClick={() => {
-                            deleteTask(value);
+                            
+                            deleteUser(value);
                         }}>
                         <div className='del-icon'>
                             <MdDelete size={20} />
@@ -91,21 +101,24 @@ const Viewusers = () => {
 
     const [deleteuser, setDeleteuser] = useState()
 
-    const deleteTask = (id) => {
-        axios.delete(`http://192.168.100.135:8000/tasks/${id}`)
-        .then(response => {
-                if(response.status === 200){
-                    setDeleteuser(userdata.filter(action => action.id === id))
-                    console.log(response, 'resonse')
+    const deleteUser = (id) => {
+        const uid = parseInt(id)
+        axios.delete(`http://192.168.100.135:3000/users/${id}`,{ headers: headers })
+            .then(response => {
+                if (response.status === 200) {
+                    setDeleteuser(userdata.filter(task => task.id === uid))
+                    console.log(response, "response")
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log(error)
             })
+            alert("Deleted user")
     }
 
 
     const columns = useMemo(() => Column, []);
-    const data = useMemo(() => userdata, [userdata]);
+    const data = useMemo(() => tempData, [tempData]);
     const tableInstance = useTable({ columns, data });
 
 

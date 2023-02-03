@@ -1,19 +1,25 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import Authuser from './Authuser'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import Authuser from './Authuser';
 
-const ProtectedRoute = () => {
-    // const navigate = useNavigate()
-    // const {getToken} = Authuser()
-    // if(!getToken()){
-    //     navigate('/log')
-    // }
 
-  return (
-    <> 
+function PrivateRoute({Component}) {
+
+    const {getToken} = Authuser()
+    console.log(getToken())
+    const tokenString = sessionStorage.getItem('token')
     
-    </>
-  )
-}
+    const isLoggedIn = () => {
+      if(!tokenString) {
+          return false;
+      } else {
+          return true;
+      }
+  }
 
-export default ProtectedRoute
+    const auth = isLoggedIn();
+
+    return auth ? Component : <Navigate to  = "/log" />
+  }
+  
+  export default PrivateRoute

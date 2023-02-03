@@ -21,6 +21,40 @@ table {
     background-color: #219ebc;
     color: white;
   }
+  .d-filter {
+    display: flex;
+    gap: 2vh;
+    margin-top: 2vh;
+    margin-left: 5vh;
+    margin-bottom: 2vh;
+}
+.d-filter input{
+    width: 20vh;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid;
+    outline: none;
+}
+.d-filter button{
+    padding: 5px;
+    width: 10vh;
+    background-color: #219ebc;
+    border-radius: 1vh;
+    color: white;
+}
+.d-filter button:hover{
+  cursor: pointer;
+  background-color: #ffb703;
+}
+.d-filter label{
+    margin-top: 0.8vh;
+}
+.edit-container{
+  height: 20vh;
+  width: 20vh;
+  background-color: #219ebc;
+}
+
   @media screen and (max-width: 600px) {
     table {
       margin-top: 2vh;

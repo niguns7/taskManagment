@@ -1,138 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Table.css';
-import Tanstacktable from './Tanstack_table/Tanstacktable';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
-const Table = () => {
+const Cell = ({ value, id, onUpdate }) => {
+  const [editMode, setEditMode] = useState(false);
+  const [newValue, setNewValue] = useState(value);
 
-    const [sn, setSn] = useState('');
-    const [date, setDate] = useState('');
-    const [task, setTask] = useState('');
-    const [time, setTime] = useState('');
-    const [timeTaken, setTimetaken] = useState('');
-    const [status, setStatus] = useState('');
+  const handleEdit = () => {
+    setEditMode(true);
+  };
 
-    const addTask = (e) => {
-        e.preventDefault();
+  const handleSave = () => {
+    setEditMode(false);
+    onUpdate(id, newValue);
+  };
 
-        const submitTask = {
-            sn: sn,
-            date: date,
-            task: task,
-            time: time,
-            timeTaken: timeTaken,
-            status: status,
-        }
-        setUdata([...udata, submitTask]);
-        resetHandler();
-        Postdata();
-    };
+  const handleChange = (event) => {
+    setNewValue(event.target.value);
+  };
 
-    const navigate = useNavigate();
-    const Goback = () => {
-        let path = '/user'
-        navigate(path)
-    }
+  return editMode ? (
+    <input
+      type="text"
+      value={newValue}
+      onChange={handleChange}
+      onBlur={handleSave}
+    />
+  ) : (
+    <div onClick={handleEdit}>{value}</div>
+  );
+};
 
-    //axios get request
-    const [udata, setUdata] = useState([]);
+const Table = ({ data, onUpdate }) => {
+  return (
+    <table>
+      <tbody>
+        {data.map((row) => (
+          <tr key={row.id}>
+            <td>
+              <Cell
+                value={row.role}
+                id={row.id}
+                onUpdate={onUpdate}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
-    useEffect(() => {
-      axios.get('https://1b66-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks')
-        .then(response => {
-          setUdata(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, []);
+const App = () => {
+  const [data, setData] = useState([
+    { id: 1, role: "Admin" },
+    { id: 2, role: "User" },
+    { id: 3, role: "Guest" },
+  ]);
 
-    //axios post request
-    const Postdata = () => {
-        axios.post('https://1b66-2400-1a00-b060-737-2e1c-f1c4-50e9-917a.in.ngrok.io/tasks',
-            {
-                sn: sn,
-                date: date,
-                task: task,
-                time: time,
-                timeTaken: timeTaken,
-                status: status,
-            }).then(Response => console.log(Response)).catch(Error => console.log(Error));
-    }
+  const handleUpdate = (id, newValue) => {
+    axios
+      .patch(`/api/roles/${id}`, { role: newValue })
+      .then((res) => {
+        setData(
+          data.map((row) =>
+            row.id === id ? { ...row, role: newValue } : row
+          )
+        );
+      })
+      .catch((err) => console.error(err));
+  };
 
-    return (
-        <>
-            <div className='task-table'>
-                <div className='go-back'>
-                    <h1 onClick={Goback}>
-                        &#60; Go back
-                    </h1>
-                </div>
-                <h1 className='top_head'>  Submit your task here </h1>
-                <div className='table_container'>
-                    <div className='table-row'>
-                        <div className='input-field'>
+  return (
+    <div className="App">
+      <Table data={data} onUpdate={handleUpdate} />
+    </div>
+  );
+};
 
-                            <input
-                                id='sn'
-                                placeholder='sn'
-                                value={sn}
-                                onChange= {(e) => setSn(e.target.value)}
-                                type='text'
-                                required
-                            />
-                            <input
-                                id='date'
-                                placeholder='date'
-                                value={date}
-                                onChange= {(e) => setDate(e.target.value)}
-                                type='date'
-                                required
-                            />
-                            <input
-                                id='task'
-                                placeholder='task'
-                                value={task}
-                                onChange= {(e) => setTask(e.target.value)}
-                                type='text'
-                                required
-                            />
-                            <input
-                                id='time'
-                                placeholder='estimated time'
-                                value={time}
-                                onChange= {(e) => setTime(e.target.value)}
-                                type='text'
-                                required
-                            />
-                            <input
-                                id='timeTaken'
-                                placeholder='timeTaken'
-                                value={timeTaken}
-                                onChange= {(e) => setTimetaken(e.target.value)}
-                                type='text'
-                                required
-                            />
-                            <select id="stauts" name="stauts" placeholder='status' value={status} onChange= {(e) => setStatus(e.target.value)} required>
-                                <option >done</option>
-                                <option >on process</option>
-                                <option >carries over</option>
-                                <option >hold</option>
-                                <option >to do </option>
-                            </select>
-
-                        </div>
-                        <button className='table-button' onClick={addTask}>Add Task</button>
-                    </div>
-
-                    <h1 className='middle-heading'>your tasks will displayed here</h1>
-
-                </div>
-                <Tanstacktable usersData={udata} />
-            </div>
-        </>
-    )
-}
-
-export default Table
+export default App;

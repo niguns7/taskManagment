@@ -1,0 +1,29 @@
+.page-container{
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    margin-top: 20vh;
+}
+
+.page-container img{
+    height: 30vh;
+    width: 30vh;
+}
+.page-container h1{
+    font-size: 3vh;
+    margin-top: 2vh;
+    opacity: 0.5;
+}
+.page-container button{
+    margin-top: 5vh;
+    padding: 1.5vh;
+    background-color: #219ebc;
+    color: white;
+    width: 20vh;
+    border-radius: 1vh;
+}
+.page-container hover{
+    cursor: pointer;
+    background-color: #e1b812;
+}

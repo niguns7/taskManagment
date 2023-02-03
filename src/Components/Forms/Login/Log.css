@@ -1,68 +1,108 @@
-.log-container{
+.log-container {
     display: grid;
     height: auto;
     width: auto;
     place-items: center;
 }
-.log-card{
+
+.log-card {
     width: 120vh;
     height: 73vh;
     background-color: rgb(244, 244, 244);
     margin-top: 15vh;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 32px, rgba(0, 0, 0, 0.22) 0px 5px 5px;
 }
-.log-card img{
+
+.log-card img {
     width: 60vh;
     height: 73vh;
 }
-.log{
+
+.log {
     display: flex;
 }
-.log h1{
+
+.log h1 {
     font-size: 5vh;
     font-weight: 700;
     margin-left: 4vh;
     padding-top: 7vh;
     color: #219ebc;
 }
-.log span{
+
+.log span {
     font-size: 1.8vh;
     margin-left: 4vh;
     padding-top: 4vh;
     color: #959595;
     font-weight: 400;
 }
-.log-inputs{
+
+.log-inputs {
     display: grid;
     margin-top: 3vh;
     margin-left: 4vh;
     gap: 2vh;
 }
 
-.log-inputs input{
+.log-inputs input {
     padding: 1.5vh;
     width: 50vh;
     border: 1px solid #d3d3d3;
     border-radius: 1vh;
+    outline: none;
 }
-.log-inputs input:focus{
-    border: 0.3px solid #094fcf;
-}
-.log-inputs button{
-    margin-top: 1vh;
+
+.log-items button {
+    margin-top: 2vh;
+    margin-left: 3vh;
     padding: 1.3vh;
     background-color: #219ebc;
     color: #fff;
     width: 20vh;
     border-radius: 5vh;
 }
-.log-inputs button:hover{
+
+.log-items button:hover {
     background-color: #ffb703;
 }
+
 .log-inputs .input-errors {
     border-color: red;
     border: 1.5px solid red;
 }
 
+.error {
+    margin-top: 1px;
+    color: #ed4337;
+    font-size: 13px;
+}
 
+.password-field {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 1vh;
+}
 
+.password-field input {
+    border: none;
+    outline: none;
+}
+
+.password-field i {
+    margin-top: 1.5vh;
+    cursor: pointer;
+}
+
+.password-field input {
+    width: 46vh;
+}
+
+.checkout {
+    display: flex;
+    gap: 2vh;
+    flex-direction: row;
+    margin-left: 4vh;
+    margin-top: 2vh;
+}

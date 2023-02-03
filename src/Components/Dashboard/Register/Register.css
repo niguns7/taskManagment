@@ -3,16 +3,15 @@
   height: 110vh;
   width: auto;
   place-items: center;
+  object-fit: cover;
 }
 .reg-card{
-  height: 110vh;
+  min-height: 100vh;
+  border-radius: 10px;
+  max-height: 135vh;
   background-color: rgb(244, 244, 244);
   margin-top: 5vh;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 32px, rgba(0, 0, 0, 0.22) 0px 5px 5px;
-}
-.reg-card img{
-  width: 80vh;
-  height: 110vh;
 }
 .reg{
   display: flex;
@@ -38,7 +37,7 @@
 }
 
 .reg-inputs input{
-  padding: 1.2vh;
+  padding: 1vh;
   margin-right: 2vh;
   width: 60vh;
   border: 1px solid #d3d3d3;
@@ -52,7 +51,7 @@
   padding: 1.3vh;
   background-color: #219ebc;
   color: #fff;
-  width: 20vh;
+  width: 60vh;
   border-radius: 5vh;
 }
 .reg-inputs button:hover{
@@ -63,6 +62,11 @@
   color: #ed4337;
   font-size: 13px;
 }
+.reg-inputs .input-error {
+  border-color: red;
+  border: 1.5px solid red;
+}
+
 
 
 

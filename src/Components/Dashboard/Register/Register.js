@@ -1,12 +1,15 @@
 import React from 'react';
 import './Register.css';
-import bgimg from '../../../assets/loginpimg.jpg';
 import { useFormik } from 'formik';
-// import { Registerschema } from './Registerschema';
+import { Registerschema } from './Registerschema';
 import axios from 'axios';
-// import { object } from 'yup';
+import Authuser from '../../Forms/Authuser';
 
 const Register = () => {
+  const { getToken } = Authuser()
+
+  // const [imagePath,setImagePath]=useState("")
+
   const initialValues = {
     uname: '',
     fname: '',
@@ -15,64 +18,64 @@ const Register = () => {
     contact: '',
     role: '',
     designation: '',
-    file: ''
+    file: null,
+    fileName:""
 
   }
-  // const Postdata = (data) => {
-  //  return  axios.post('http://192.168.100.135:8000/users',
-  //     {
-  //      data,
-  //      headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //     })x
-  // }
 
 
   const Postdata = (formData) => {
-    return axios.post('https://c60f-2400-1a00-b060-2e1b-1f65-871-c420-698d.in.ngrok.io/users', formData, {
+    return axios.post('http://192.168.100.135:3000/users', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${getToken()}`
       }
     });
   }
 
 
-  const onSubmit = async() => {
-     const data = {...values}
-    const formData=new FormData()
-    formData.append('fullname',data.fname)
-    formData.append('username',data.uname)
-    formData.append('email',data.email)
-    formData.append('password',data.password)
-    formData.append('contactNo',data.contact)
-    formData.append('roles',data.role)
-    formData.append('designation',data.designation)
+  const onSubmit = async () => {
+    const data = { ...values }
+    const formData = new FormData()
+    formData.append('fullname', data.fname)
+    formData.append('username', data.uname)
+    formData.append('email', data.email)
+    formData.append('password', data.password)
+    formData.append('contactNo', data.contact)
+    formData.append('roles', data.role)
+    formData.append('designation', data.designation)
     formData.append('file', data.file);
 
     console.log(data)
 
-    await Postdata(formData).then((res)=>{
+    await Postdata(formData).then((res) => {
       console.log(res)
-    }).catch((err)=>{console.log(err.response)});
+    }).catch((err) => { console.log(err.response) });
     resetForm({ ...initialValues })
+    alert('User Registered')
   }
 
-
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik({
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      Postdata()
+      alert('User Registered')
+    }
+  };
+  const { values, errors, touched, handleBlur, setFieldValue, handleChange, handleSubmit, resetForm } = useFormik({
     initialValues: initialValues,
-    // validationSchema: Registerschema,
+    validationSchema: Registerschema,
     onSubmit,
   });
+
+  
 
   return (
     <>
 
-      <form onSubmit={handleSubmit} autoComplete="off" encType='multipart/form-data'>
+      <form onSubmit={handleSubmit} autoComplete="off" encType='multipart/form-data' >
         <div className='reg-container' >
           <div className='reg-card'>
             <div className='reg'>
-              <img src={bgimg} alt="heyheyhey" />
               <div className='reg-items'>
                 <h1>Register Users</h1>
                 <span>Register user's account here</span>
@@ -160,18 +163,21 @@ const Register = () => {
                     name='designation'
                     type='text'
                     className={errors.designation && touched.designation ? "input-error" : ""} />
-
+                    {errors.designation && touched.designation && <p className="error">{errors.designation}</p>}
                   <label>Image</label>
                   <input
                     placeholder='enter image'
-                    value={values.file}
-                    onChange={handleChange}
+                    value={values.fileName}
+                    onChange={(e) => {
+                      setFieldValue('fileName',e.target.value)
+                      setFieldValue('file', e.target.files[0])
+                    }}
                     onBlur={handleBlur}
                     id='file'
                     name='file'
                     type='file' />
-                    
-                  <button type='submit'>Register users</button>
+
+                  <button type='submit' onKeyDown={handleKeyDown}>Register users</button>
                 </div>
               </div>
             </div>

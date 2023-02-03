@@ -13,7 +13,7 @@ const AdminCards = (props) => {
                 </div>
                 <div className='card-items'>
                     <h1 > {props.title} </h1>
-                    <h2> {props.number} </h2>
+                    <h2>{props.number} </h2>
                     <h3 onClick={props.onclick}> View more </h3>
                 </div>
             </div>

@@ -3,23 +3,24 @@ import './Allusers.css';
 import AllusersCard from './Cards/AllusersCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Authuser from '../../Forms/Authuser';
 
 const Allusers = () => {
-
+    const {getToken} = Authuser()
     const [useritems, setUseritems] = useState([])
 
-    useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/photos')
-        .then(Response => {
-            {setUseritems(Response.data)}
-            console.log(Response.data)
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    const headers = { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+    };
+    useEffect (() => {
+        axios.get('http://192.168.100.135:3000/users/info', {headers:headers} )
+            .then((Res) => {
+                setUseritems(Res?.data?.data)
+                console.log(Res?.data?.data)
+            }).catch((err) => console.log(err))
     }, [])
-
-    const slicedata = useritems.slice(0,16)
+    console.log(useritems)
 
     const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const Allusers = () => {
         const path = '/admin'
         navigate(path)
     }
+
     return (
         <>
             <h2 className='go-back' onClick={Routechange}> &#60; Go back</h2>
@@ -34,11 +36,13 @@ const Allusers = () => {
             <div className='allusers-container'>
                 <div className='displayuser-card'>
                     {
-                        slicedata.map((userdata) => {
+                        useritems.map((userdata) => {
+                            const imgBaseUrl = `http://192.168.100.135:80/${userdata.imageUrl}`;
                             return <AllusersCard
-                                image={userdata.url}
+                                image={imgBaseUrl}
                                 Id={userdata.id}
-                                name={userdata.title}
+                                Role={userdata.role}
+                                name={userdata.fullname}
                             />
                         })
                     }

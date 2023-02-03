@@ -1,34 +1,63 @@
 import { useFormik } from 'formik';
-import React from 'react';
-import './Log.css';
-import bgimg from '../../../assets/loginpimg.jpg';
-import Basicschemas from '../Schema';
-import Authuser from '../Authuser';
+import React, { useState, useEffect } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import bgimg from '../../../assets/loginpimg.jpg';
+import Authuser from '../Authuser';
+import Basicschemas from '../Schema';
+import './Log.css';
 
 
 const Log = () => {
   const navigate = useNavigate()
-  
-  const {http,setToken,getToken,token,user} = Authuser()
 
-  const loginHandler=() => {
-    if(!token && !user?.username === values?.username){
-      alert("user not found")
+  const { http, setToken ,token, user } = Authuser()
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const storedUsername = sessionStorage.getItem("username");
+    const storedPassword = sessionStorage.getItem("password");
+    if (storedUsername && storedPassword) {
+      setUsername(storedUsername);
+      setPassword(storedPassword);
+      setRememberMe(true);
     }
-    else if(token && user?.roles === "admin"){
+  }, []);
+
+  const loginHandler = () => {
+    if (rememberMe) {
+      sessionStorage.setItem("username", values.username);
+      sessionStorage.setItem("password", values.password);
+    }
+    if (token && user?.username !== values?.username) {
+      alert('user not found!')
+    }
+    else if (token && user?.roles === "admin") {
       navigate('/admin')
-      alert("welcome admin")  
     }
-    else if(token && user?.roles === "user"){
+    else if (token && user?.roles === "user") {
       navigate('/user')
-      alert("welcome user")
     }
 
   }
 
+  const [showpassword, setShowpassword] = useState(false)
+
+  const handleShowPassword = () => {
+    setShowpassword(prevState => !prevState);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loginHandler()
+    }
+  };
+
+
   const submitHandler = () => {
-    http.post ('/auth/login', {
+    http.post('/auth/login', {
       username: values.username,
       password: values.password
     }).then(
@@ -36,14 +65,15 @@ const Log = () => {
     ).catch((err) => console.log(err))
     loginHandler()
   }
-  console.log(getToken())
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       username: '',
       password: '',
+      remember: '',
     },
     validationSchema: Basicschemas,
+    submitHandler,
   });
 
 
@@ -51,7 +81,7 @@ const Log = () => {
 
   return (
     <>
-      <div className='log-container' onSubmit={handleSubmit}>
+      <div className='log-container' onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         <div className='log-card'>
           <div className='log'>
             <img src={bgimg} alt="heyheyhey" />
@@ -68,19 +98,38 @@ const Log = () => {
                   onBlur={handleBlur}
                   id='username'
                   type='username'
-                  className={errors.usename && touched.usename ? "input-errors" : " "} />
+                  className={errors.username && touched.username ? "input-errors" : " "} />
+                  {errors.username && touched.username && <p className="error">{errors.username}</p>}
                 <label>Password</label>
 
-                <input
-                  placeholder='enter Password'
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id='password'
-                  type='password' />
-
-                <button type='submit' onClick={submitHandler}>Login</button>
+                <div className="password-field" >
+                  <input
+                    placeholder='enter Password'
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    id='password'
+                    type={showpassword ? 'text' : 'password'}
+                    className= {errors.password && touched.password ? "input-errors" : " " }
+                  />
+                  <i onClick={handleShowPassword}>{showpassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}</i>
+                </div >
+                                  {errors.password && touched.password && <p className="error">{errors.password}</p>}
               </div>
+
+              <div className='checkout'>
+
+              <input 
+                type='checkbox'
+                value={values.remember} 
+                onChange={() => setRememberMe(prev => !prev)}
+                onBlur={handleBlur}
+                checked={rememberMe}
+              />
+              <label>Remember me</label>
+              </div>
+              <button type='submit' onClick={submitHandler} onKeyDown={handleKeyDown}>Login</button>
+
             </div>
           </div>
         </div>

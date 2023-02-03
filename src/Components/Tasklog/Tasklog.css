@@ -11,15 +11,16 @@
 .personal-infoo h1{
     text-align: center;
     color: #219ebc;
-    font-size: 3vh;
+    font-size: 4vh;
     font-weight: 600;
-    margin-top: 4vh;
+    margin-top:3vh;
 }
 
 .personal-infoo h2{
     display: block;
     text-align: center;
-    margin: 4vh;
+    margin: 3vh;
+    margin-top: 3vh;
 }
 .user-cardss h5{
     text-align: center;

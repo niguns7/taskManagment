@@ -1,10 +1,35 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Img from '../../../assets/welcome.jpg'
+import Authuser from '../../Forms/Authuser';
 import './UserDashboard.css';
-import avtar from '../../../assets/Avtar.png';
-import {FaArrowAltCircleLeft} from 'react-icons/fa';
 
 const UserDashboard = () => {
+  const { getToken } = Authuser()
+
+  const logout = async () => {
+    sessionStorage.clear('token')
+    alert("you are logging out 'press ok for confirmation' ")
+    navigate('/')
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${getToken()}`
+  };
+
+  const [pagedata, setPagedata] = useState([])
+  useEffect(() => {
+    axios.get('http://192.168.100.135:3000/users/user/me/data', { headers: headers })
+      .then((res) => {
+        setPagedata(res?.data?.data)
+      }).catch((err) => console.log(err))
+  }, [])
+
+  const imgBaseUrl = `http://192.168.100.135:80/${pagedata.imageUrl}`;
+
   const navigate = useNavigate();
   const Taskchange = () => {
     let path = '/table';
@@ -15,6 +40,10 @@ const UserDashboard = () => {
     let path = '/usertasklog';
     navigate(path);
   }
+  const Getstarted = () => {
+    let path = '/table';
+    navigate(path);
+  }
 
   return (
     <>
@@ -23,20 +52,36 @@ const UserDashboard = () => {
         <div className='Sidedrawer'>
 
           <div className='Heading'>
-            <img className='avtar' src={avtar} alt='adminavtar' />
-            <h2> John David </h2>
-            <h3> user </h3>
+            <div className='head-img'>
+              <img className='avtar' src={imgBaseUrl} alt='adminavtar' />
+            </div>
+            <div className='head-items'>
+              <h2>{pagedata.fullname}</h2>
+              <h3> User </h3>
+            </div>
           </div>
           <ul>
             <li onClick={Taskchange}><FaArrowAltCircleLeft className='icon' /> TaskTable</li>
             <li onClick={changeTask}><FaArrowAltCircleLeft className='icon' /> Tasklog</li>
+            <button onClick={logout}>Log-out</button>
           </ul>
         </div>
 
         <div className='admintop-nav'>
-          <h1> user-Dashboard </h1>
+          <h1> UserDashboard </h1>
         </div>
-
+        <div className='welcome-container'>
+          <div className='wel-items'>
+            <img src={Img} alt='adlksj' />
+            <div className='well-text'>
+              <h1> Welcome back, {pagedata.fullname}!!</h1>
+              <p> Hey {pagedata.fullname}, great to seet you on the board,
+                Become focused, organized, and calm with your projects.
+                Organize your work and life. <span onClick={Getstarted}>Get started</span> with your Tasks.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

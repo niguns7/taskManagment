@@ -13,7 +13,7 @@
 }
 
 .user-cardss{
-    margin-top: 6vh;
+    margin-top: 4vh;
     width: 60vh;
     height: 75vh;
     background-color: rgb(244, 244, 244);
@@ -22,7 +22,10 @@
 }
 .user-cards h2{
     text-align: center ;
-    padding-top: 10px;
+    padding-top: 1px;
+}
+.user-cardss img{
+    border-radius: 50vh;
 }
 .user-progressbar {
    padding-top: 3vh;
@@ -32,7 +35,7 @@
 }
 .personal-info h2 {
     color: black;
-    font-size: 10px;
+    font-size: 2vh;
 }
 .personal-info h1 {
     text-align: center;
