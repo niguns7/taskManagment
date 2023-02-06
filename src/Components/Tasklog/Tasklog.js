@@ -63,7 +63,7 @@ const Tasklog = () => {
             <h2> <b>username:</b> {userData.username}</h2>
             <h2> <b>Fullname:</b> {userData.fullname}</h2>
             <h2> <b>Email:</b>  {userData.email}</h2>
-            <h2>  <b>Total tasks done:</b> {userData.totaltask}</h2>
+            <h2>  <b>Total tasks:</b> {userData.totaltask}</h2>
             <h2>  <b>Taskdone:</b> {userData.taskdone}</h2>
           </div>
           <div className='user-progress'>
