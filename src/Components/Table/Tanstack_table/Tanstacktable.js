@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { MdDelete, MdOutlineDownloadDone } from 'react-icons/md';
 import { useTable } from 'react-table';
 import Authuser from '../../Forms/Authuser';
@@ -11,34 +11,32 @@ import './Tanstacktable.css';
 const Tanstacktable = ({usersData}) => {
     const [openmodel, setOpenmodel] = useState(false)
     const [selecteddata, setSelectedData] = useState()
-    const [searchdata, setSearchdata] = useState()
+    const[tableData,setTableData]=useState([])
+    const [selectedValue, setSelectedValue] = useState()
 
+    
 
     const closeMode = () => {
         setOpenmodel(false)
     }
-
-    const tempdata = usersData.length > 0 ? usersData.map((item) => {
-        return {
-            id: item.id,
-            sn: item.sn,
-            date: item.date,
-            task: item.task,
-            time: item.time,
-            timeTaken: item.timeTaken,
-            remarks: item.remarks,
-            status: item.status,
-            action: item.id
-        }
-    }) : []
-    console.log(typeof(tempdata))
-
-    const openModel = (id) => {
-        setOpenmodel(true)
-        const requiredData=tempdata.find(task => task.id ===id)
-        setSelectedData(requiredData)   
+     
+    useEffect(()=>{
+        setTableData(usersData)
+    },[])
+    
+    const openModel = () => {
+        setOpenmodel(true)    
     }
-
+    useEffect(()=> {
+        const selecteddata = tableData.find(f => f.id === selectedValue)
+        setSelectedData((p)=>{
+            return{
+                ...p,
+                selecteddata
+            }
+        })
+    },[selectedValue])
+    console.log("selectedvalue: ", selectedValue)
 
     const Column = [
         {
@@ -71,12 +69,12 @@ const Tanstacktable = ({usersData}) => {
         },
         {
             Header: 'Created by',
-            accessor: 'created_by',
+            accessor: 'createdBy',
         },
         {
             width: 90,
             Header: 'Action',
-            accessor: 'action',
+            accessor: 'id',
             Cell: ({ value }) => {
                 return (
                     <>
@@ -89,7 +87,8 @@ const Tanstacktable = ({usersData}) => {
                             </div>
                             <div className='edit-icon'>
                                 <button type='button' onClick={() => {
-                                    openModel(value);
+                                    setSelectedValue(value)
+                                    openModel()
                                 }}> <MdOutlineDownloadDone size={20} /></button>
                             </div>
                         </div>
@@ -114,7 +113,7 @@ const Tanstacktable = ({usersData}) => {
         axios.delete(`http://192.168.100.135:3000/tasks/${id}`, { headers: headers })
             .then(response => {
                 if (response.status === 200) {
-                    setTdata(tempdata.filter(task => task.id === uid))
+                    setTdata(tableData.filter(task => task.id === uid))
                     console.log(response, "response")
                 }
             })
@@ -125,7 +124,7 @@ const Tanstacktable = ({usersData}) => {
 
 
     const columns = useMemo(() => Column, []);
-    const data = useMemo(() => searchdata || tempdata, [tempdata]);
+    const data = useMemo(() =>  tableData, [tableData]);
     const Tableinstance = useTable({ columns, data })
 
     const {
@@ -145,7 +144,7 @@ const Tanstacktable = ({usersData}) => {
         axios.get(`http://192.168.100.135:3000/tasks?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
             .then(response => {
                 if (response.status === 200) {
-                    setSearchdata(response?.data?.data);
+                    setTableData(response?.data?.data)
                     console.log("Response:", response?.data?.data)
                 }
             })
@@ -159,9 +158,10 @@ const Tanstacktable = ({usersData}) => {
         filterdate
     });
 
+
     return (
         <>
-            {openmodel && <Popup closeMode={closeMode} selecteddata={selecteddata} />}
+            {openmodel && <Popup closeMode={closeMode} selecteddata={selecteddata} selectedValue={selectedValue} />}
             <div className='d-filter'>
                 <label> Filter date: </label>
                 <input
