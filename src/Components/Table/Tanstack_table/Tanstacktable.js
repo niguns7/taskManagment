@@ -8,34 +8,79 @@ import Popup from '../Popup/Popup';
 import './Column.css';
 import './Tanstacktable.css';
 
-const Tanstacktable = ({usersData}) => {
+const Tanstacktable = ({ usersData }) => {
     const [openmodel, setOpenmodel] = useState(false)
     const [selecteddata, setSelectedData] = useState()
-    const[tableData,setTableData]=useState([])
+    const [tableData, setTableData] = useState([])
     const [selectedValue, setSelectedValue] = useState()
+    const [time, setTime] = useState(false)
 
-    
+    //mapping userdata
+    const tempdata = usersData.length > 0 ? usersData.map((item) => {
+        return {
+            id: item.id,
+            sn: item.sn,
+            fdate: item.date,
+            task: item.task,
+            Estime: item.time,
+            timeTaken: item.timeTaken,
+            remarks: item.remarks,
+            status: item.status,
+            action: item.id,
+            createdBy: item.createdBy,
+            createdAt: item.createdAt,
+        }
+    }) : []
 
+    //mapping tempdata
+    const extractedData = tempdata.length > 0 ? tempdata.map(({id, sn, fdate, task,timeTaken, remarks, action, createdAt, Estime , status,createdBy}) => {
+        const time = createdAt;
+        const [hours, minutes] = time.split(":").map(Number);
+        const date = new Date();
+        date.setHours(hours);
+        date.setMinutes(minutes + Estime);
+        const Totaltime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return {
+            id,
+            sn,
+            fdate,
+            task,
+            timeTaken,
+            remarks,
+            action,
+            createdAt,
+            Estime,
+            status,
+            Totaltime,
+            createdBy,
+        };
+ 
+    }) : [];
+
+    console.log("ex:", extractedData)
+
+    //closeand open for popup
     const closeMode = () => {
         setOpenmodel(false)
     }
-     
-    useEffect(()=>{
-        setTableData(usersData)
-    },[])
     
     const openModel = () => {
-        setOpenmodel(true)    
+        setOpenmodel(true)
     }
-    useEffect(()=> {
+
+    useEffect(() => {
+        setTableData(extractedData)
+    }, [])
+
+    useEffect(() => {
         const selecteddata = tableData.find(f => f.id === selectedValue)
-        setSelectedData((p)=>{
-            return{
+        setSelectedData((p) => {
+            return {
                 ...p,
                 selecteddata
             }
         })
-    },[selectedValue])
+    }, [selectedValue])
     console.log("selectedvalue: ", selectedValue)
 
     const Column = [
@@ -45,7 +90,7 @@ const Tanstacktable = ({usersData}) => {
         },
         {
             Header: 'Date',
-            accessor: 'date',
+            accessor: 'fdate',
         },
         {
             Header: 'Task',
@@ -53,7 +98,7 @@ const Tanstacktable = ({usersData}) => {
         },
         {
             Header: 'Estimated time',
-            accessor: 'time',
+            accessor: 'Estime',
         },
         {
             Header: 'Time taken',
@@ -100,9 +145,7 @@ const Tanstacktable = ({usersData}) => {
     ]
     const { getToken } = Authuser()
 
-
     //delete request
-    const [tData, setTdata] = useState()
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${getToken()}`
@@ -113,7 +156,7 @@ const Tanstacktable = ({usersData}) => {
         axios.delete(`http://192.168.100.135:3000/tasks/${id}`, { headers: headers })
             .then(response => {
                 if (response.status === 200) {
-                    setTdata(tableData.filter(task => task.id === uid))
+                    tableData.filter(task => task.id === uid)
                     console.log(response, "response")
                 }
             })
@@ -122,9 +165,8 @@ const Tanstacktable = ({usersData}) => {
             })
     }
 
-
     const columns = useMemo(() => Column, []);
-    const data = useMemo(() =>  tableData, [tableData]);
+    const data = useMemo(() => tableData, [tableData]);
     const Tableinstance = useTable({ columns, data })
 
     const {
@@ -135,11 +177,13 @@ const Tanstacktable = ({usersData}) => {
         prepareRow,
     } = Tableinstance;
 
-
+    //formik initial values
     const iniitialValues = {
         formdate: '',
         todate: '',
     }
+
+    //filtering data
     const filterdate = () => {
         axios.get(`http://192.168.100.135:3000/tasks?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
             .then(response => {
@@ -153,15 +197,18 @@ const Tanstacktable = ({usersData}) => {
             });
     }
 
+    //formik
     const { values, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: iniitialValues,
         filterdate
     });
 
 
+    //rendering table
     return (
         <>
             {openmodel && <Popup closeMode={closeMode} selecteddata={selecteddata} selectedValue={selectedValue} />}
+                    
             <div className='d-filter'>
                 <label> Filter date: </label>
                 <input
@@ -207,7 +254,7 @@ const Tanstacktable = ({usersData}) => {
                         rows.map((row) => {
                             prepareRow(row);
                             return (
-                                <tr {...row.getRowProps()}>
+                                <tr {...row.getRowProps()} style={{ backgroundColor: time ? '#b85153' : '' }}>
                                     {
                                         row.cells.map((cell) => {
                                             return (<td {...cell.getCellProps()}>{cell.render('Cell')}</td>)
