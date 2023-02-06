@@ -1,33 +1,44 @@
-import React, {  useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './Popup.css';
 import { CgCloseO } from 'react-icons/cg'
 import { useFormik } from 'formik';
 import axios from 'axios';
-import * as yup from 'yup'; 
+import * as yup from 'yup';
 import Authuser from '../../Forms/Authuser';
 
-const Popup = ({ closeMode, selecteddata }) => {
+const Popup = ({ closeMode, selecteddata, selectedValue }) => {
+
+    const [id, setId] = useState(selectedValue);
+
+    useEffect(() => {
+      setId(selectedValue);
+    }, [selectedValue])
 
 
-    const {getToken} = Authuser()
+    console.log("selectedvalue: ", selectedValue)
+    console.log("type:", typeof(selectedValue))
+
+    const { getToken } = Authuser()
+
     const itemdata = useMemo(() => {
+        debugger
         return {
-            id: selecteddata.id,
-            sn: selecteddata.sn,
-            date: selecteddata.date,
-            task: selecteddata.task,
-            time: selecteddata.time,
-            timeTaken: selecteddata.timeTaken,
-            remarks: selecteddata.remarks,
-            status: selecteddata.status,
+            id: selecteddata?.selecteddata?.id,
+            sn: selecteddata?.selecteddata?.sn,
+            date: selecteddata?.selecteddata?.date,
+            task: selecteddata?.selecteddata?.task,
+            time: selecteddata?.selecteddata?.time,
+            timeTaken: selecteddata?.selecteddata?.timeTaken,
+            remarks: selecteddata?.selecteddata?.remarks,
+            status: selecteddata?.selecteddata?.status,
+
         }
-    }, [selecteddata]);
+    }, [selecteddata])
 
-    
+    console.log("selecteddata: ", selecteddata)
+    console.log("itemdata", itemdata)
+
     const initialValues = itemdata;
-
-    console.log("items of popup:", initialValues)
-    console.log(typeof(itemdata))
 
     const PopupSchema = yup.object().shape({
         sn: yup.number().positive().required('Required'),
@@ -38,10 +49,11 @@ const Popup = ({ closeMode, selecteddata }) => {
         status: yup.string().required('Required'),
     });
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         resetForm({ ...itemdata })
         putdata(values.id)
         alert("data editted")
+        closeMode()
     };
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm } = useFormik({
@@ -65,15 +77,15 @@ const Popup = ({ closeMode, selecteddata }) => {
         status: values.status,
     }
 
-    const putdata  = (id) => {
+    const putdata = () => {
         axios.put(`http://192.168.100.135:3000/tasks/update/${id}`, body, { headers: headers })
-    .then(response => {
-        
-        console.log("response: ", response?.data);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+            .then(response => {
+
+                console.log("response: ", response?.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 
