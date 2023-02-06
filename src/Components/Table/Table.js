@@ -52,7 +52,6 @@ const Table = () => {
 
     const [udata, setUdata] = useState([]);
 
-
     const fetchData = () => {
         setLoading(true)
         axios.get(`http://192.168.100.135:3000/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`,{ headers: headers } )
@@ -68,7 +67,7 @@ const Table = () => {
     useEffect(fetchData, [])
 
     // axios post request
-
+    // console.log("udata:", udata)
     const headers = { 
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${getToken()}`
@@ -198,7 +197,7 @@ const Table = () => {
 
                     </div>
                     {loading?<>Loading...</>:
-                    <Tanstacktable usersData={udata} />
+                    <Tanstacktable usersData={udata} body={body}/>
                     }
                     
                 </div>
