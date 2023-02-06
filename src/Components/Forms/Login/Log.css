@@ -106,3 +106,10 @@
     margin-left: 4vh;
     margin-top: 2vh;
 }
+.log-inputs .toop{
+    display: flex;
+    gap: 1vh;
+}
+ .toop i{
+    margin-top: 3px;
+}

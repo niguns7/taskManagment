@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { BiUserPin,BiLockAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import bgimg from '../../../assets/loginpimg.jpg';
 import Authuser from '../Authuser';
@@ -26,22 +27,22 @@ const Log = () => {
     }
   }, []);
 
-  const loginHandler = () => {
-    if (rememberMe) {
-      sessionStorage.setItem("username", values.username);
-      sessionStorage.setItem("password", values.password);
-    }
-    if (token && user?.username !== values?.username) {
-      alert('user not found!')
-    }
-    else if (token && user?.roles === "admin") {
-      navigate('/admin')
-    }
-    else if (token && user?.roles === "user") {
-      navigate('/user')
-    }
+  // const loginHandler = () => {
+  //   if (rememberMe) {
+  //     sessionStorage.setItem("username", values.username);
+  //     sessionStorage.setItem("password", values.password);
+  //   }
+  //   if (token && user?.username !== values?.username) {
+  //     alert('user not found!')
+  //   }
+  //   else if (token && user?.roles === "admin") {
+  //     navigate('/admin')
+  //   }
+  //   else if (token && user?.roles === "user") {
+  //     navigate('/user')
+  //   }
 
-  }
+  // }
 
   const [showpassword, setShowpassword] = useState(false)
 
@@ -51,7 +52,7 @@ const Log = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      loginHandler()
+      // loginHandler()
     }
   };
 
@@ -63,7 +64,16 @@ const Log = () => {
     }).then(
       (res) => setToken(res.data.user, res.data.access_token)
     ).catch((err) => console.log(err))
-    loginHandler()
+    // loginHandler()
+    if (token && user?.username !== values?.username) {
+      alert('user not found!')
+    }
+    else if (token && user?.roles === "admin") {
+      navigate('/admin')
+    }
+    else if (token && user?.roles === "user") {
+      navigate('/user')
+    }
   }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -90,7 +100,11 @@ const Log = () => {
               <span> Log- in your account</span>
               <div className='log-inputs'>
 
+                <div className='toop'>
+                <i><BiUserPin size={20}/></i>
                 <label>Username</label>
+                </div>
+
                 <input
                   placeholder='enter username'
                   value={values.username}
@@ -100,7 +114,11 @@ const Log = () => {
                   type='username'
                   className={errors.username && touched.username ? "input-errors" : " "} />
                   {errors.username && touched.username && <p className="error">{errors.username}</p>}
+
+                <div className='toop'>
+                <i><BiLockAlt size={20}/></i>
                 <label>Password</label>
+                </div>
 
                 <div className="password-field" >
                   <input
