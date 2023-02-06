@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserTasklog.css';
 import { useNavigate } from 'react-router-dom';
-import avtar from '../../../assets/bibek.jpg'
 import Authuser from '../../Forms/Authuser';
 import {FaArrowAltCircleLeft} from 'react-icons/fa';
 
@@ -18,19 +17,20 @@ const UserTasklog = () => {
 
       useEffect(() =>{
         axios.get('http://192.168.100.135:3000/tasks/log', {headers: headers}).then((Res) => {
-          setLogdata(Res.data)
-          console.log('Respons: ',Res.data)
+          setLogdata(Res?.data?.data)
+          console.log('Respons: ',Res?.data?.data)
         }).catch((err) => console.log(err))
       }, [])
 
       const imgBaseUrl = `http://192.168.100.135:80/${logData.imageUrl}`;
+
 
   const [style, setStyle] = useState({});
 
   setTimeout(() => {
     const newStyle = {
       opacity: 1,
-      width: `${logData.percent}%`
+      width: `${logData.percent}%`  
     }
     setStyle(newStyle);
   }, 100)
@@ -82,8 +82,8 @@ const UserTasklog = () => {
                               <h2> <b>Id: </b>{logData.id}</h2>
                               <h2> <b>username: </b>{logData.username}</h2>
                               <h2> <b>Email: </b>{logData.email}</h2>
-                              <h2>  <b>Total tasks:</b> {logData.totalTask}</h2>
-                              <h2>  <b>Taskdone: </b> {logData.Taskdone}</h2>
+                              <h2>  <b>Total tasks:</b> {logData.totaltask}</h2>
+                              <h2>  <b>Taskdone: </b> {logData.taskdone}</h2>
                             </div>
                             <div className='user-progress'>
                               <h1> Your progress bar</h1>
