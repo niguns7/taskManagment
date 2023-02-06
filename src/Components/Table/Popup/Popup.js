@@ -21,7 +21,6 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
     const { getToken } = Authuser()
 
     const itemdata = useMemo(() => {
-        debugger
         return {
             id: selecteddata?.selecteddata?.id,
             sn: selecteddata?.selecteddata?.sn,
