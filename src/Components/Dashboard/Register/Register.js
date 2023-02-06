@@ -19,7 +19,7 @@ const Register = () => {
     role: '',
     designation: '',
     file: null,
-    fileName:""
+    fileName: ""
 
   }
 
@@ -67,7 +67,7 @@ const Register = () => {
     onSubmit,
   });
 
-  
+
 
   return (
     <>
@@ -142,7 +142,7 @@ const Register = () => {
                   {errors.contact && touched.contact && <p className="error">{errors.contact}</p>}
 
                   <label>Role</label>
-                  <input
+                  <select
                     placeholder='enter Role'
                     value={values.role}
                     onChange={handleChange}
@@ -150,7 +150,10 @@ const Register = () => {
                     id='role'
                     name='role'
                     type='text'
-                    className={errors.role && touched.role ? "input-error" : ""} />
+                    className={errors.role && touched.role ? "input-error" : ""} >
+                    <option > user  </option>
+                    <option >admin</option>
+                  </select>
                   {errors.role && touched.role && <p className="error">{errors.role}</p>}
 
                   <label>Designation</label>
@@ -163,13 +166,14 @@ const Register = () => {
                     name='designation'
                     type='text'
                     className={errors.designation && touched.designation ? "input-error" : ""} />
-                    {errors.designation && touched.designation && <p className="error">{errors.designation}</p>}
+                  {errors.designation && touched.designation && <p className="error">{errors.designation}</p>}
+
                   <label>Image</label>
                   <input
                     placeholder='enter image'
                     value={values.fileName}
                     onChange={(e) => {
-                      setFieldValue('fileName',e.target.value)
+                      setFieldValue('fileName', e.target.value)
                       setFieldValue('file', e.target.files[0])
                     }}
                     onBlur={handleBlur}
