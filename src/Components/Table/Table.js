@@ -196,7 +196,7 @@ const Table = () => {
                         <h1 className='middle-heading'>your tasks will displayed here</h1>
 
                     </div>
-                    {loading?<>Loading...</>:
+                    {loading?<h2>Loading........</h2>:
                     <Tanstacktable usersData={udata} body={body}/>
                     }
                     
