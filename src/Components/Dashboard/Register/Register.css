@@ -43,6 +43,12 @@
   border: 1px solid #d3d3d3;
   border-radius: 1vh;
 }
+.reg-inputs select{
+  padding: 1vh;
+  margin-right: 2vh;
+  width: 60vh;
+  border: 1px solid #d3d3d3;
+}
 .reg-inputs input:focus{
   border: 0.3px solid #094fcf;
 }
