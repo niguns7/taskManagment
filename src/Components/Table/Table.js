@@ -7,12 +7,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Authuser from '../Forms/Authuser';
 
-
-
 const Table = () => {
-    const {getToken} = Authuser()
+    const {getToken, http} = Authuser()
     const [loading,setLoading]=useState(false)
-
 
     const Tableschema = yup.object().shape({
         sn: yup.number().positive().required('Required'),
@@ -21,6 +18,7 @@ const Table = () => {
         time: yup.string().required('Required'),
         status: yup.string().required('Required'),
     });
+
 
     const iniitialValues = {
         sn: '',
@@ -54,7 +52,7 @@ const Table = () => {
 
     const fetchData = () => {
         setLoading(true)
-        axios.get(`http://192.168.100.135:3000/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`,{ headers: headers } )
+        http.get(`/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`)
             .then(response => {
                 setUdata(response?.data?.data);
             })
@@ -80,11 +78,12 @@ const Table = () => {
         time: values.time,
         timeTaken: values.timeTaken,
         remarks: values.remarks,
-        status: values.status
+        status: values.status,
+        createdAt: new Date().toISOString()
     };
     
     const Postdata = () => {
-        axios.post(`http://192.168.100.135:3000/tasks`, body, { headers: headers })
+        http.post(`/tasks`, body, { headers: headers })
     .then(response => {
         console.log(response);
     })
@@ -92,7 +91,6 @@ const Table = () => {
         console.log(error);
     });
     }
-
 
     return (
         <>

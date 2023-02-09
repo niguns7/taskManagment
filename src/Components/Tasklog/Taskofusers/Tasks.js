@@ -12,17 +12,12 @@ const Tasks = () => {
   const sn = useParams()
   const id = Object.values(sn)
 
-  const { getToken } = Authuser()
+  const { http } = Authuser()
   const [userdata, setUserdata] = useState([])
-
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${getToken()}`
-  }
 
   // getting tasks
   useEffect(() => {
-     axios.get(`http://192.168.100.135:3000/tasks/admin/user/${id}?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`, { headers: headers })
+     http.get(`/tasks/admin/user/${id}?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`)
       .then(Response => {
         setUserdata(Response?.data?.data)
         console.log("data", Response?.data?.data)
@@ -49,7 +44,7 @@ const Tasks = () => {
   const [searchdata, setSearchdata] = useState()
 
   const filterdate = () => {
-     axios.get(`http://192.168.100.135:3000/tasks/admin/user/${id}?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
+     http.get(`/tasks/admin/user/${id}?fromdate=${values.fromdate}&todate=${values.todate}`)
       .then(response => {
         if (response.status === 200) {
           setSearchdata(response?.data?.data)
@@ -91,7 +86,7 @@ const Tasks = () => {
 
   return (
     <>
-    <AssignTask userid={id}/>
+    <AssignTask id={id}/>
       <div className='mainpage'>
         <div className='d-filter' onSubmit={handleSubmit}>
           <label> Filter date: </label>

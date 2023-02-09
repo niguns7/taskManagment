@@ -3,22 +3,39 @@ import './Viewusers.css';
 // import { Column } from './Columns';
 import { useTable } from 'react-table';
 import axios from 'axios';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete ,MdOutlineDownloadDone} from 'react-icons/md';
 import Authuser from '../Forms/Authuser';
+import Upopup from './usepopup/Upopup';
 
 const Viewusers = () => {
-    const{getToken} = Authuser()
+    const{http} = Authuser()
     //get request
     const [userdata, setUserdata] = useState([])
+    const [openmodel, setOpenmodel] = useState(false)
+    const [selecteddata, setSelectedData] = useState()
+    const [selectedValue, setSelectedValue] = useState()
 
+        const closeMode = () => {
+        setOpenmodel(false)
+    }
 
-    const headers = { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
+    const openModel = () => {
+        setOpenmodel(true)
+    }
+
+    useEffect(() => {
+        const selecteddata = userdata.find(f => f.id === selectedValue)
+        setSelectedData((p) => {
+            return {
+                ...p,
+                selecteddata
+            }
+        })
+    }, [selectedValue])
+
     useEffect(() => {
 
-        axios.get('http://192.168.100.135:3000/users/alluser', {headers:headers})
+        http.get('/users/alluser')
             .then(response => {
                 setUserdata(response?.data?.data)
                 console.log("data", response.data)
@@ -84,16 +101,20 @@ const Viewusers = () => {
             accessor: 'action',
             Cell: ({ value }) => {
                 return (
-                    <div
-                        className="action-content"
-                        onClick={() => {
-                            
-                            deleteUser(value);
-                        }}>
-                        <div className='del-icon'>
-                            <MdDelete size={20} />
-                        </div>
-                    </div>
+                            <div className='items'>
+                                <div className='del-icon'
+                                    onClick={() => {
+                                        deleteUser(value);
+                                    }}>
+                                    <MdDelete size={20} />
+                                </div>
+                                <div className='edit-icon'>
+                                    <button type='button' onClick={() => {
+                                        setSelectedValue(value)
+                                        openModel()
+                                    }}> <MdOutlineDownloadDone size={20} /></button>
+                                </div>
+                            </div>
                 );
             }
         },
@@ -103,7 +124,7 @@ const Viewusers = () => {
 
     const deleteUser = (id) => {
         const uid = parseInt(id)
-        axios.delete(`http://192.168.100.135:3000/users/${id}`,{ headers: headers })
+        http.delete(`http://192.168.100.135:3000/users/${id}`)
             .then(response => {
                 if (response.status === 200) {
                     setDeleteuser(userdata.filter(task => task.id === uid))
@@ -132,6 +153,7 @@ const Viewusers = () => {
 
     return (
         <>
+                    {openmodel && <Upopup closeMode={closeMode} selecteddata={selecteddata} selectedValue={selectedValue}   />}
             <div className='mainpage'>
                 <h1 className='heading'> List of users </h1>
                 <div className='Container'>

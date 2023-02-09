@@ -10,7 +10,7 @@ import Authuser from '../../Forms/Authuser';
 import axios from 'axios';
 
 const AdminDash = () => {
-  const { getToken } = Authuser()
+  const { http } = Authuser()
 
   const logout = () => {
     sessionStorage.clear('token')
@@ -18,14 +18,9 @@ const AdminDash = () => {
     console.log("logged out")
   }
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${getToken()}`
-  };
-
   const [pagedata, setPagedata] = useState([])
   useState(() => {
-    axios.get('http://192.168.100.135:3000/users/admin/me/data', { headers: headers })
+    http.get('/users/admin/me/data')
       .then((res) => {
         setPagedata(res?.data?.data)
         console.log(res?.data?.data)

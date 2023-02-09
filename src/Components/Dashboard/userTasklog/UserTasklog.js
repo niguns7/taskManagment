@@ -6,7 +6,7 @@ import Authuser from '../../Forms/Authuser';
 import {FaArrowAltCircleLeft} from 'react-icons/fa';
 
 const UserTasklog = () => {
-  const {getToken} = Authuser()
+  const {getToken, http} = Authuser()
 
   const [logData, setLogdata] = useState([])
 
@@ -16,7 +16,7 @@ const UserTasklog = () => {
   };
 
       useEffect(() =>{
-        axios.get('http://192.168.100.135:3000/tasks/log', {headers: headers}).then((Res) => {
+        http.get('/tasks/log', {headers: headers}).then((Res) => {
           setLogdata(Res?.data?.data)
           console.log('Respons: ',Res?.data?.data)
         }).catch((err) => console.log(err))

@@ -6,7 +6,7 @@ import axios from 'axios';
 import Authuser from '../../Forms/Authuser';
 
 const Register = () => {
-  const { getToken } = Authuser()
+  const {http} = Authuser()
 
   // const [imagePath,setImagePath]=useState("")
 
@@ -23,12 +23,10 @@ const Register = () => {
 
   }
 
-
   const Postdata = (formData) => {
-    return axios.post('http://192.168.100.135:3000/users', formData, {
+    return http.post('/users', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${getToken()}`
       }
     });
   }

@@ -38,6 +38,8 @@ export default function Authuser (){
             "Authorization": `Bearer ${getToken()}`
         }
     });
+
+    console.log(token)
     
     return{
         setToken: saveToken,

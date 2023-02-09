@@ -7,7 +7,7 @@ import Authuser from '../../Forms/Authuser';
 import './UserDashboard.css';
 
 const UserDashboard = () => {
-  const { getToken } = Authuser()
+  const { getToken ,http } = Authuser()
 
   const logout = async () => {
     sessionStorage.clear('token')
@@ -22,7 +22,7 @@ const UserDashboard = () => {
 
   const [pagedata, setPagedata] = useState([])
   useEffect(() => {
-    axios.get('http://192.168.100.135:3000/users/user/me/data', { headers: headers })
+    http.get('/users/user/me/data', { headers: headers })
       .then((res) => {
         setPagedata(res?.data?.data)
       }).catch((err) => console.log(err))

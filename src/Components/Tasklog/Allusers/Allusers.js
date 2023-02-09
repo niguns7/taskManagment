@@ -6,15 +6,11 @@ import axios from 'axios';
 import Authuser from '../../Forms/Authuser';
 
 const Allusers = () => {
-    const {getToken} = Authuser()
+    const {http} = Authuser()
     const [useritems, setUseritems] = useState([])
 
-    const headers = { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
     useEffect (() => {
-        axios.get('http://192.168.100.135:3000/users/info', {headers:headers} )
+        http.get('http://192.168.100.135:3000/users/info')
             .then((Res) => {
                 setUseritems(Res?.data?.data)
                 console.log(Res?.data?.data)

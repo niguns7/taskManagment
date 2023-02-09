@@ -4,10 +4,9 @@ import * as yup from 'yup';
 import Authuser from '../../../Forms/Authuser';
 import axios from 'axios';
 
-const AssignTask = (props) => {
-    const id = 50
+const AssignTask = ({id}) => {
 
-    const {getToken} = Authuser()
+    const {http} = Authuser()
 
     const Tableschema = yup.object().shape({
         sn: yup.number().positive().required('Required'),
@@ -21,7 +20,8 @@ const AssignTask = (props) => {
         date: '',
         task: '',
         time: '',
-        remarks: ''
+        remarks: '',
+        status: 'to_do'
     }
 
     const {values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm} = useFormik({
@@ -30,21 +30,17 @@ const AssignTask = (props) => {
 
     })
 
-    const headers = { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
-    
     const body = {
         sn: values.sn,
         date: values.date,
         task: values.task,
         time: values.time,
-        remarks: values.remarks
+        remarks: values.remarks,
+        status: 'to_do'
     };
         
     const Postdata = () => {
-        axios.post(`http://192.168.100.135:3000/tasks/admin/assign/${id}`, body, { headers: headers })
+        http.post(`/tasks/admin/assign/${id}`, body)
     .then(response => {
         console.log(response);
     })
@@ -116,6 +112,7 @@ const AssignTask = (props) => {
                                     type='text'
                                     className={errors.time && touched.time ? "input-errors" : ""}
                                 />
+
                             </div>
                             <button className='table-button' type='submit' onClick={onSubmit}>Add Task</button>
                         </div>

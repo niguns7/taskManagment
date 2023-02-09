@@ -8,7 +8,7 @@ const Tasklog = () => {
   const id = useParams()
   const sn = Object.values(id)
 
-  const { getToken } = Authuser()
+  const { http } = Authuser()
   const navigate = useNavigate();
 
   const changePage = () => {
@@ -22,13 +22,8 @@ const Tasklog = () => {
 
   const [useritems, setUseritems] = useState()
 
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${getToken()}`
-  }
-
   useEffect(() => {
-    axios.get(`http://192.168.100.135:3000/tasks/admin/log/${sn}`, { headers: headers })
+    http.get(`http://192.168.100.135:3000/tasks/admin/log/${sn}`)
       .then(Response => {
         setUseritems(Response?.data?.data)
         console.log(Response?.data?.data)
