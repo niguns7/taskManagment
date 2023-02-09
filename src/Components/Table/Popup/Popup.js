@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import Authuser from '../../Forms/Authuser';
 
 const Popup = ({ closeMode, selecteddata, selectedValue }) => {
-
+console.log(selecteddata)
     const [id, setId] = useState(selectedValue);
 
     useEffect(() => {
@@ -18,15 +18,15 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
     console.log("selectedvalue: ", selectedValue)
     console.log("type:", typeof(selectedValue))
 
-    const { getToken } = Authuser()
+    const { getToken, http } = Authuser()
 
     const itemdata = useMemo(() => {
         return {
             id: selecteddata?.selecteddata?.id,
             sn: selecteddata?.selecteddata?.sn,
-            date: selecteddata?.selecteddata?.date,
+            fdate: selecteddata?.selecteddata?.date,
             task: selecteddata?.selecteddata?.task,
-            time: selecteddata?.selecteddata?.time,
+            Estime: selecteddata?.selecteddata?.time,
             timeTaken: selecteddata?.selecteddata?.timeTaken,
             remarks: selecteddata?.selecteddata?.remarks,
             status: selecteddata?.selecteddata?.status,
@@ -41,9 +41,9 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
 
     const PopupSchema = yup.object().shape({
         sn: yup.number().positive().required('Required'),
-        date: yup.string().required('Required'),
+        fdate: yup.string().required('Required'),
         task: yup.string().required('Required'),
-        time: yup.string().required('Required'),
+        Estime: yup.string().required('Required'),
         timeTaken: yup.string().required('Required'),
         status: yup.string().required('Required'),
     });
@@ -68,16 +68,16 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
 
     const body = {
         sn: values.sn,
-        date: values.date,
+        date: values.fdate,
         task: values.task,
-        time: values.time,
+        time: values.Estime,
         timeTaken: values.timeTaken,
         remarks: values.remarks,
         status: values.status,
     }
 
     const putdata = () => {
-        axios.put(`http://192.168.100.135:3000/tasks/update/${id}`, body, { headers: headers })
+        http.put(`/tasks/update/${id}`, body, { headers: headers })
             .then(response => {
 
                 console.log("response: ", response?.data);
@@ -108,13 +108,13 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
                                 className={errors.sn && touched.sn ? "input-errors" : ""}
                             />
                             <input
-                                value={values.date}
+                                value={values.fdate}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                id='date'
-                                name='date'
+                                id='fdate'
+                                name='fdate'
                                 type='date'
-                                className={errors.date && touched.date ? "input-errors" : ""}
+                                className={errors.fdate && touched.fdate ? "input-errors" : ""}
                             />
                             <input
                                 placeholder='Task'
@@ -128,11 +128,11 @@ const Popup = ({ closeMode, selecteddata, selectedValue }) => {
                             />
                             <input
                                 placeholder='Estimated time(in min)'
-                                value={values.time}
+                                value={values.Estime}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name='time'
-                                id='time'
+                                name='Estime'
+                                id='Estime'
                                 type='number'
                                 className={errors.time && touched.time ? "input-errors" : ""}
                             />

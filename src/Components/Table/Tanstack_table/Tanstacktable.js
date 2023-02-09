@@ -9,20 +9,22 @@ import './Column.css';
 import './Tanstacktable.css';
 
 const Tanstacktable = ({ usersData }) => {
+
     const [openmodel, setOpenmodel] = useState(false)
     const [selecteddata, setSelectedData] = useState()
+    const [searchedData, setSearcheddata] = useState()
     const [tableData, setTableData] = useState([])
     const [selectedValue, setSelectedValue] = useState()
-    const [time, setTime] = useState(false)
 
     //mapping userdata
     const tempdata = usersData.length > 0 ? usersData.map((item) => {
+
         return {
             id: item.id,
             sn: item.sn,
-            fdate: item.date,
+            date: item.date,
             task: item.task,
-            Estime: item.time,
+            time: item.time,
             timeTaken: item.timeTaken,
             remarks: item.remarks,
             status: item.status,
@@ -31,39 +33,43 @@ const Tanstacktable = ({ usersData }) => {
             createdAt: item.createdAt,
         }
     }) : []
-
     //mapping tempdata
-    const extractedData = tempdata.length > 0 ? tempdata.map(({id, sn, fdate, task,timeTaken, remarks, action, createdAt, Estime , status,createdBy}) => {
-        const time = createdAt;
-        const [hours, minutes] = time.split(":").map(Number);
-        const date = new Date();
-        date.setHours(hours);
-        date.setMinutes(minutes + Estime);
-        const Totaltime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const extractedData = tempdata.length > 0 ? tempdata.map(({ id, sn, date, task, timeTaken, remarks, action, createdAt, time, status, createdBy }) => {
+
+        const arr = new Date(createdAt).toLocaleString()
+        console.log("Arr:" , arr)
+
+        console.log(time)
+        let startintTime = new Date(createdAt);
+        startintTime.setMinutes(startintTime.getMinutes() + time);
+        const Finaltime = startintTime.toLocaleString()
+        console.log("Final :",Finaltime , typeof(Finaltime));
+
         return {
             id,
             sn,
-            fdate,
+            date,
             task,
             timeTaken,
             remarks,
             action,
             createdAt,
-            Estime,
+            time,
             status,
-            Totaltime,
+            Finaltime,
             createdBy,
         };
- 
+
     }) : [];
 
-    console.log("ex:", extractedData)
+    console.log(typeof (extractedData))
+
 
     //closeand open for popup
     const closeMode = () => {
         setOpenmodel(false)
     }
-    
+
     const openModel = () => {
         setOpenmodel(true)
     }
@@ -73,15 +79,17 @@ const Tanstacktable = ({ usersData }) => {
     }, [])
 
     useEffect(() => {
+        if(selectedValue > 0) {
         const selecteddata = tableData.find(f => f.id === selectedValue)
         setSelectedData((p) => {
             return {
                 ...p,
                 selecteddata
             }
-        })
+        });
+        openModel();
+    }
     }, [selectedValue])
-    console.log("selectedvalue: ", selectedValue)
 
     const Column = [
         {
@@ -90,7 +98,7 @@ const Tanstacktable = ({ usersData }) => {
         },
         {
             Header: 'Date',
-            accessor: 'fdate',
+            accessor: 'date',
         },
         {
             Header: 'Task',
@@ -98,7 +106,7 @@ const Tanstacktable = ({ usersData }) => {
         },
         {
             Header: 'Estimated time',
-            accessor: 'Estime',
+            accessor: 'time',
         },
         {
             Header: 'Time taken',
@@ -121,29 +129,37 @@ const Tanstacktable = ({ usersData }) => {
             Header: 'Action',
             accessor: 'id',
             Cell: ({ value }) => {
-                return (
-                    <>
-                        <div className='items'>
-                            <div className='del-icon'
-                                onClick={() => {
-                                    deleteTask(value);
-                                }}>
-                                <MdDelete size={20} />
+                if (searchedData && searchedData.length > 0) {
+                    console.log("searchedData", searchedData);
+                    return <h3>hey</h3>
+                   
+                } else {
+                    
+                    console.log("hds",tableData)    
+                    return (
+                        <>
+                            <div className='items'>
+                                <div className='del-icon'
+                                    onClick={() => {
+                                        deleteTask(value);
+                                    }}>
+                                    <MdDelete size={20} />
+                                </div>
+                                <div className='edit-icon'>
+                                    <button type='button' onClick={() => {
+                                        setSelectedValue(value)
+                                        
+                                    }}> <MdOutlineDownloadDone size={20} /></button>
+                                </div>
                             </div>
-                            <div className='edit-icon'>
-                                <button type='button' onClick={() => {
-                                    setSelectedValue(value)
-                                    openModel()
-                                }}> <MdOutlineDownloadDone size={20} /></button>
-                            </div>
-                        </div>
-                    </>
-                );
+                        </>
+                    );
+                }
 
             },
         },
     ]
-    const { getToken } = Authuser()
+    const { getToken, http } = Authuser()
 
     //delete request
     const headers = {
@@ -153,7 +169,7 @@ const Tanstacktable = ({ usersData }) => {
 
     const deleteTask = (id) => {
         const uid = parseInt(id)
-        axios.delete(`http://192.168.100.135:3000/tasks/${id}`, { headers: headers })
+        http.delete(`/tasks/${id}`, { headers: headers })
             .then(response => {
                 if (response.status === 200) {
                     tableData.filter(task => task.id === uid)
@@ -166,7 +182,7 @@ const Tanstacktable = ({ usersData }) => {
     }
 
     const columns = useMemo(() => Column, []);
-    const data = useMemo(() => tableData, [tableData]);
+    const data = useMemo(() => searchedData || tableData, [tableData, searchedData]);
     const Tableinstance = useTable({ columns, data })
 
     const {
@@ -185,10 +201,10 @@ const Tanstacktable = ({ usersData }) => {
 
     //filtering data
     const filterdate = () => {
-        axios.get(`http://192.168.100.135:3000/tasks?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
+        http.get(`/tasks?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
             .then(response => {
                 if (response.status === 200) {
-                    setTableData(response?.data?.data)
+                    setSearcheddata(response?.data?.data)
                     console.log("Response:", response?.data?.data)
                 }
             })
@@ -208,7 +224,7 @@ const Tanstacktable = ({ usersData }) => {
     return (
         <>
             {openmodel && <Popup closeMode={closeMode} selecteddata={selecteddata} selectedValue={selectedValue} />}
-                    
+
             <div className='d-filter'>
                 <label> Filter date: </label>
                 <input
@@ -253,8 +269,19 @@ const Tanstacktable = ({ usersData }) => {
                     {
                         rows.map((row) => {
                             prepareRow(row);
+                            const currenttime = new Date().toLocaleString()
+                            const finaltime = (row.original.Finaltime)
+                            const showColor = () => {
+                                if (currenttime > finaltime && row.original.status !== 'done') {
+                                    return true
+                                } else {
+                                    return false
+                                }
+                            }
+                            console.log("currenttime: ", currenttime, "finaltime: ", finaltime)
+                            console.log(showColor())
                             return (
-                                <tr {...row.getRowProps()} style={{ backgroundColor: time ? '#b85153' : '' }}>
+                                <tr {...row.getRowProps()} style={{ backgroundColor: showColor() ? '#F88379' : '' }}>
                                     {
                                         row.cells.map((cell) => {
                                             return (<td {...cell.getCellProps()}>{cell.render('Cell')}</td>)
