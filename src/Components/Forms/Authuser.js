@@ -32,7 +32,7 @@ export default function Authuser (){
         setUser(user)
     }
     const http = axios.create({
-        baseURL: 'http://192.168.100.135:3000',
+        baseURL: 'http://139.59.64.228:3006/',
         headers: {
             "content-type" : "application/json",
             "Authorization": `Bearer ${getToken()}`
