@@ -33,6 +33,13 @@ const Log = () => {
     setShowpassword(prevState => !prevState);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // loginHandler()
+    }
+  };
+
+
   const submitHandler = () => {
     http.post('/users/auth/login', {
       username: values.username,
@@ -40,6 +47,7 @@ const Log = () => {
     }).then(
       (res) => setToken(res.data.user, res.data.access_token)
     ).catch((err) => console.log(err))
+    // loginHandler()
     if (user?.username !== values?.username) {
       alert('user not found!')
     }
@@ -66,7 +74,7 @@ const Log = () => {
 
   return (
     <>
-      <div className='log-container' onSubmit={handleSubmit} >
+      <div className='log-container' onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         <div className='log-card'>
           <div className='log'>
             <img src={bgimg} alt="heyheyhey" />
