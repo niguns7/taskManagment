@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
 import './App.css';
 import AdminDash from "./Components/Dashboard/Admindash/AdminDash";
 import UserDashboard from "./Components/Dashboard/userDash/UserDashboard";
@@ -18,10 +19,13 @@ import ProtectedRoute from './Components/Forms/ProtectedRoute';
 import Pagenotfound from "./Components/Pagenotfound/Pagenotfound";
 import Popup from "./Components/Table/Popup/Popup";
 
+const queryClient = new QueryClient()
+
 
 function App() {
 
   return (
+    <QueryClientProvider client={queryClient} >
         <Routes>
           <Route exact path="/" element={<Frontpage />} />
           <Route exact path="/signup" element={<Signup />} />
@@ -41,6 +45,7 @@ function App() {
           <Route exact path="/tasklog/:id" element={<ProtectedRoute Component={<Tasklog/>}/>} />
 
           </Routes>
+          </QueryClientProvider>
   );
 }
 
