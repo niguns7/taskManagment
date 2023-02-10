@@ -75,7 +75,7 @@ select {
     border-color: red;
     border: 1.5px solid red;
 }
-.task-table h2{
+ h6{
     margin-top: 4vh;
     font-size: 3vh;
     font-weight: 600;

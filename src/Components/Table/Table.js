@@ -6,9 +6,12 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Authuser from '../Forms/Authuser';
+import { QueryClient, useMutation, useQuery } from 'react-query';
 
-const Table = () => {
-    const {getToken, http} = Authuser()
+
+ const Table = () => {
+
+    const {http} = Authuser()
     const [loading,setLoading]=useState(false)
 
     const Tableschema = yup.object().shape({
@@ -49,7 +52,6 @@ const Table = () => {
     });
 
     const [udata, setUdata] = useState([]);
-
     const fetchData = () => {
         setLoading(true)
         http.get(`/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`)
@@ -66,10 +68,6 @@ const Table = () => {
 
     // axios post request
     // console.log("udata:", udata)
-    const headers = { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
     
     const body = {
         sn: values.sn,
@@ -83,7 +81,7 @@ const Table = () => {
     };
     
     const Postdata = () => {
-        http.post(`/tasks`, body, { headers: headers })
+        http.post(`/tasks`, body)
     .then(response => {
         console.log(response);
     })
@@ -194,14 +192,12 @@ const Table = () => {
                         <h1 className='middle-heading'>your tasks will displayed here</h1>
 
                     </div>
-                    {loading?<h2>Loading........</h2>:
                     <Tanstacktable usersData={udata} body={body}/>
-                    }
-                    
                 </div>
             </form>
         </>
     )
 }
 
-export default Table;
+
+export default Table
