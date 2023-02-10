@@ -22,7 +22,7 @@ const UserTasklog = () => {
         }).catch((err) => console.log(err))
       }, [])
 
-      const imgBaseUrl = `http://192.168.100.135:80/${logData.imageUrl}`;
+      const imgBaseUrl = `http://139.59.64.228:3006/${logData.imageUrl}`;
 
 
   const [style, setStyle] = useState({});
