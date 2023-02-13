@@ -7,6 +7,7 @@ import Authuser from '../../Forms/Authuser';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
 import AssignTask from './AssignTask/AssignTask';
+import { useQuery } from 'react-query';
 
 const Tasks = () => {
   const sn = useParams()
@@ -15,17 +16,21 @@ const Tasks = () => {
   const { http } = Authuser()
   const [userdata, setUserdata] = useState([])
 
-  // getting tasks
+  const fetchdata = async () => {
+    const res = await http.get(`/tasks/admin/user/${id}?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`)
+    return res?.data
+  }
+
+  const { data: tabdata } = useQuery("tabdata", () => fetchdata())
+
+
   useEffect(() => {
-     http.get(`/tasks/admin/user/${id}?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`)
-      .then(Response => {
-        setUserdata(Response?.data?.data)
-        console.log("data", Response?.data?.data)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }, [])
+    console.log("ss", tabdata?.data)
+    if (tabdata?.data?.length > 0) {
+      console.log("ssk", tabdata?.data)
+      setUserdata(tabdata?.data)
+    }
+  }, [tabdata])
 
   useEffect(() => {
     const taskdata = userdata.length > 0 ? userdata.map((items) => {
@@ -44,7 +49,7 @@ const Tasks = () => {
   const [searchdata, setSearchdata] = useState()
 
   const filterdate = () => {
-     http.get(`/tasks/admin/user/${id}?fromdate=${values.fromdate}&todate=${values.todate}`)
+    http.get(`/tasks/admin/user/${id}?fromdate=${values.fromdate}&todate=${values.todate}`)
       .then(response => {
         if (response.status === 200) {
           setSearchdata(response?.data?.data)
@@ -56,10 +61,9 @@ const Tasks = () => {
       })
   }
 
- 
 
   const columns = useMemo(() => Column, []);
-  const data = useMemo(() => searchdata || userdata, [userdata]);
+  const data = useMemo(() => searchdata || userdata, [userdata, searchdata]);
   const tableInstance = useTable({ columns, data });
 
 
@@ -72,7 +76,7 @@ const Tasks = () => {
 
   const iniitialValues = {
     formdate: '',
-    todate: '', 
+    todate: '',
     sn: '',
     date: '',
     task: '',
@@ -86,7 +90,7 @@ const Tasks = () => {
 
   return (
     <>
-    <AssignTask id={id}/>
+      <AssignTask id={id} />
       <div className='mainpage'>
         <div className='d-filter' onSubmit={handleSubmit}>
           <label> Filter date: </label>
