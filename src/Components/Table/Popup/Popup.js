@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 import Authuser from '../../Forms/Authuser';
+import { useQuery } from 'react-query';
 
 const Popup = ({ closeMode, selecteddata, selectedValue }) => {
 console.log(selecteddata)
@@ -61,11 +62,6 @@ console.log(selecteddata)
         onSubmit
     })
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
-
     const body = {
         sn: values.sn,
         date: values.fdate,
@@ -76,15 +72,10 @@ console.log(selecteddata)
         status: values.status,
     }
 
-    const putdata = () => {
-        http.put(`/tasks/update/${id}`, body, { headers: headers })
-            .then(response => {
-
-                console.log("response: ", response?.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    const {refetch} = useQuery()
+    const putdata = async () => {
+       await  http.put(`/tasks/update/${id}`, body)
+        refetch()
     }
 
 
