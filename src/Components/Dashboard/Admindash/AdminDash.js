@@ -15,7 +15,7 @@ const AdminDash = () => {
   const logout = () => {
     sessionStorage.clear('token')
     navigate('/')
-    console.log("logged out")
+    alert('you are logging out press ok for confirmation ')
   }
 
   const [pagedata, setPagedata] = useState([])
