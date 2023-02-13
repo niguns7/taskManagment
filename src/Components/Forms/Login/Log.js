@@ -13,6 +13,7 @@ const Log = () => {
   const navigate = useNavigate()
 
   const { http, setToken, token, user } = Authuser()
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -45,7 +46,7 @@ const Log = () => {
       username: values.username,
       password: values.password
     }).then(
-      (res) => setToken(res.data.user, res.data.access_token)
+      (res) => setToken(res?.data?.user, res?.data?.access_token)
     ).catch((err) => console.log(err))
     // loginHandler()
     if (user?.username !== values?.username) {

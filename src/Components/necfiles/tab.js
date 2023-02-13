@@ -78,3 +78,50 @@ const App = () => {
 };
 
 export default App;
+
+ // const tempdata = usersData.length > 0 ? usersData.map((item) => {
+    //     return {
+    //         id: item.id,
+    //         sn: item.sn,
+    //         date: item.date,
+    //         task: item.task,
+    //         time: item.time,
+    //         timeTaken: item.timeTaken,
+    //         remarks: item.remarks,
+    //         status: item.status,
+    //         action: item.id,
+    //         createdBy: item.createdBy,
+    //         createdAt: item.createdAt,
+    //     }
+    // }) : []
+
+    // // //mapping tempdata
+    // const extractedData = tempdata.length > 0 ? tempdata.map(({ id, sn, date, task, timeTaken, remarks, action, createdAt, time, status, createdBy }) => {
+
+    //     const arr = new Date(createdAt).toLocaleString()
+    //     console.log("Arr:" , arr)
+
+    //     console.log(time)
+    //     let startintTime = new Date(createdAt);
+    //     startintTime.setMinutes(startintTime.getMinutes() + time);
+    //     const Finaltime = startintTime.toLocaleString()
+    //     console.log("Final :",Finaltime , typeof(Finaltime));
+
+    //     return {
+    //         id,
+    //         sn,
+    //         date,
+    //         task,
+    //         timeTaken,
+    //         remarks,
+    //         action,
+    //         createdAt,
+    //         time,
+    //         status,
+    //         Finaltime,
+    //         createdBy,
+    //     };
+
+    // }) : [];
+
+    // console.log(typeof (extractedData))
