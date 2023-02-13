@@ -13,13 +13,13 @@ const Navbar = () => {
   return (
    <>
    <div className='navbar'>
-    <span className='logo'> Tm </span>
+    {/* <span className='logo'> Tm </span>
     <div className='navbar-items'>
         <h1>Home</h1>
         <h1>About</h1>
         <h1>contact</h1>
         <button className='nav-button' onClick={change}>Sign-up</button>
-        </div>
+        </div> */}
     </div>
    </>
   )
