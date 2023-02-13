@@ -25,6 +25,7 @@ export default function Authuser (){
     const [user, setUser] = useState(getuser());
 
     const saveToken = (user, token) => {
+
         sessionStorage.setItem('token', JSON.stringify(token));
         sessionStorage.setItem('user', JSON.stringify(user));
 
@@ -33,6 +34,7 @@ export default function Authuser (){
     }
     const http = axios.create({
         baseURL: 'http://139.59.64.228:3006/',
+        // baseURL: 'http://192.168.100.135:3000',
         headers: {
             "content-type" : "application/json",
             "Authorization": `Bearer ${getToken()}`
@@ -42,7 +44,7 @@ export default function Authuser (){
     console.log(token)
     
     return{
-        setToken: saveToken,
+        saveToken,
         token,
         user,
         getToken,

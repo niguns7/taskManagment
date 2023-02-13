@@ -12,7 +12,7 @@ import './Log.css';
 const Log = () => {
   const navigate = useNavigate()
 
-  const { http, setToken, token, user } = Authuser()
+  const { http, saveToken, token, user } = Authuser()
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -46,18 +46,22 @@ const Log = () => {
       username: values.username,
       password: values.password
     }).then(
-      (res) => setToken(res?.data?.user, res?.data?.access_token)
-    ).catch((err) => console.log(err))
-    // loginHandler()
-    if (user?.username !== values?.username) {
+      (res) => {saveToken(res?.data?.user, res?.data?.access_token);
+      // loginHandler()
+    if (!res?.data?.access_token && user?.username !== values?.username) {
       alert('user not found!')
     }
-    else if (token && user?.roles === "admin") {
+    else if (res?.data?.access_token && res?.data?.user?.roles === "admin") {
       navigate('/admin')
     }
-    else if (token && user?.roles === "user") {
+    else if (res?.data?.access_token && res?.data?.user?.roles === "user") {
       navigate('/user')
     }
+      }
+      
+    
+    ).catch((err) => console.log(err))
+    
   }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
