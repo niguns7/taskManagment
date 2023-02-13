@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdDelete, MdOutlineDownloadDone } from 'react-icons/md';
@@ -16,67 +15,48 @@ const Tanstacktable = ({ usersData }) => {
     const [tableData, setTableData] = useState([])
     const [selectedValue, setSelectedValue] = useState()
 
-    //mapping userdata
-    const tempdata = usersData.length > 0 ? usersData.map((item) => {
+    // mapping userdata
 
-        return {
-            id: item.id,
-            sn: item.sn,
-            date: item.date,
-            task: item.task,
-            time: item.time,
-            timeTaken: item.timeTaken,
-            remarks: item.remarks,
-            status: item.status,
-            action: item.id,
-            createdBy: item.createdBy,
-            createdAt: item.createdAt,
-        }
-    }) : []
-    //mapping tempdata
-    const extractedData = tempdata.length > 0 ? tempdata.map(({ id, sn, date, task, timeTaken, remarks, action, createdAt, time, status, createdBy }) => {
+    useEffect (() => {
 
-        const arr = new Date(createdAt).toLocaleString()
-        console.log("Arr:" , arr)
-
-        console.log(time)
-        let startintTime = new Date(createdAt);
-        startintTime.setMinutes(startintTime.getMinutes() + time);
-        const Finaltime = startintTime.toLocaleString()
-        console.log("Final :",Finaltime , typeof(Finaltime));
-
-        return {
-            id,
-            sn,
-            date,
-            task,
-            timeTaken,
-            remarks,
-            action,
-            createdAt,
-            time,
-            status,
-            Finaltime,
-            createdBy,
-        };
-
-    }) : [];
-
-    console.log(typeof (extractedData))
-
+        const finalArr = usersData.length > 0 ? usersData.map((item) => {
+            const arr = new Date(item.createdAt).toLocaleString()
+            console.log("Arr:" , arr)
+    
+            console.log( "time", item.time)
+            let startintTime = new Date(item.createdAt);
+            startintTime.setMinutes(startintTime.getMinutes() + item.time);
+            const Finaltime = startintTime.toLocaleString()
+            console.log("Final :",Finaltime , typeof(Finaltime));
+    
+            return {
+                id: item.id,
+                sn: item.sn,
+                date: item.date,
+                task: item.task,
+                time: item.time,
+                timeTaken: item.timeTaken,
+                remarks: item.remarks,
+                status: item.status,
+                action: item.id,
+                createdBy: item.createdBy,
+                createdAt: item.createdAt,
+                Finaltime: Finaltime,
+            }
+        }) : []
+        console.log("final array:", finalArr)
+        setTableData(finalArr)
+    }, [usersData])
 
     //closeand open for popup
     const closeMode = () => {
         setOpenmodel(false)
     }
-
     const openModel = () => {
         setOpenmodel(true)
     }
 
-    useEffect(() => {
-        setTableData(extractedData)
-    }, [])
+  
 
     useEffect(() => {
         if(selectedValue > 0) {
@@ -134,13 +114,12 @@ const Tanstacktable = ({ usersData }) => {
                     return <h3>hey</h3>
                    
                 } else {
-                    
-                    console.log("hds",tableData)    
                     return (
                         <>
                             <div className='items'>
                                 <div className='del-icon'
                                     onClick={() => {
+                                        alert("task deleted")
                                         deleteTask(value);
                                     }}>
                                     <MdDelete size={20} />
@@ -162,14 +141,10 @@ const Tanstacktable = ({ usersData }) => {
     const { getToken, http } = Authuser()
 
     //delete request
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-    };
 
     const deleteTask = (id) => {
         const uid = parseInt(id)
-        http.delete(`/tasks/${id}`, { headers: headers })
+        http.delete(`/tasks/${id}`,)
             .then(response => {
                 if (response.status === 200) {
                     tableData.filter(task => task.id === uid)
@@ -201,7 +176,7 @@ const Tanstacktable = ({ usersData }) => {
 
     //filtering data
     const filterdate = () => {
-        http.get(`/tasks?fromdate=${values.fromdate}&todate=${values.todate}`, { headers: headers })
+        http.get(`/tasks?fromdate=${values.fromdate}&todate=${values.todate}`)
             .then(response => {
                 if (response.status === 200) {
                     setSearcheddata(response?.data?.data)

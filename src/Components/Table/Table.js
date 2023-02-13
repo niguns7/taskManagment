@@ -6,13 +6,13 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Authuser from '../Forms/Authuser';
-import { QueryClient, useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 
- const Table = () => {
+const Table = () => {
 
-    const {http} = Authuser()
-    const [loading,setLoading]=useState(false)
+    const { http } = Authuser()
+    const [udata, setUdata] = useState([]);
 
     const Tableschema = yup.object().shape({
         sn: yup.number().positive().required('Required'),
@@ -42,7 +42,6 @@ import { QueryClient, useMutation, useQuery } from 'react-query';
     const onSubmit = () => {
         Postdata();
         resetForm({ ...iniitialValues })
-        fetchData();
     };
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm } = useFormik({
@@ -51,24 +50,24 @@ import { QueryClient, useMutation, useQuery } from 'react-query';
         onSubmit
     });
 
-    const [udata, setUdata] = useState([]);
-    const fetchData = () => {
-        setLoading(true)
-        http.get(`/tasks?fromdate=${new Date().toISOString().substring(0,10)}&todate=${new Date().toISOString().substring(0,10)}`)
-            .then(response => {
-                setUdata(response?.data?.data);
-            })
-            .catch(error => {
-                console.log(error);
-            }).finally((()=>{
-                setLoading(false)
-            }));
-    };
-    useEffect(fetchData, [])
+    const fetchdata = async () => {
+        const res = await http.get(`/tasks?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`)
+        return res?.data
+    }
 
-    // axios post request
-    // console.log("udata:", udata)
-    
+    const { data: tabdata, refetch } = useQuery("tabdata", () => fetchdata())
+
+
+    useEffect(() => {
+        console.log("ss", tabdata?.data)
+        if (tabdata?.data?.length > 0) {
+            console.log("ssk", tabdata?.data)
+            setUdata(tabdata?.data)
+        }
+    }, [tabdata])
+
+    console.log("udata", udata)
+
     const body = {
         sn: values.sn,
         date: values.date,
@@ -79,15 +78,11 @@ import { QueryClient, useMutation, useQuery } from 'react-query';
         status: values.status,
         createdAt: new Date().toISOString()
     };
-    
+
     const Postdata = () => {
         http.post(`/tasks`, body)
-    .then(response => {
-        console.log(response);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+        alert("task added")
+        refetch()
     }
 
     return (
@@ -192,7 +187,9 @@ import { QueryClient, useMutation, useQuery } from 'react-query';
                         <h1 className='middle-heading'>your tasks will displayed here</h1>
 
                     </div>
-                    <Tanstacktable usersData={udata} body={body}/>
+                    { udata.length>0 &&
+                        <Tanstacktable usersData={udata} body={body} />
+                    }
                 </div>
             </form>
         </>
