@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import './Viewusers.css';
 // import { Column } from './Columns';
+import { MdDelete, MdOutlineDownloadDone } from 'react-icons/md';
 import { useTable } from 'react-table';
-import axios from 'axios';
-import { MdDelete ,MdOutlineDownloadDone} from 'react-icons/md';
 import Authuser from '../Forms/Authuser';
 import Upopup from './usepopup/Upopup';
+import { useQuery } from 'react-query';
 
 const Viewusers = () => {
     const{http} = Authuser()
@@ -15,8 +15,8 @@ const Viewusers = () => {
     const [selecteddata, setSelectedData] = useState()
     const [selectedValue, setSelectedValue] = useState()
 
-        const closeMode = () => {
-        setOpenmodel(false)
+    const closeMode = () => {
+    setOpenmodel(false)
     }
 
     const openModel = () => {
@@ -24,26 +24,33 @@ const Viewusers = () => {
     }
 
     useEffect(() => {
+        if(selectedValue > 0) {
         const selecteddata = userdata.find(f => f.id === selectedValue)
         setSelectedData((p) => {
             return {
                 ...p,
                 selecteddata
             }
-        })
+        });
+        openModel();
+    }
     }, [selectedValue])
 
-    useEffect(() => {
-
-        http.get('/users/alluser')
-            .then(response => {
-                setUserdata(response?.data?.data)
-                console.log("data", response.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }, [])
+    const fetchdata = async () => {
+        const res = await http.get(`/users/alluser`)
+        return res?.data
+      }
+    
+      const { data: tabdata } = useQuery("tabdata", () => fetchdata())
+    
+    
+      useEffect(() => {
+        console.log("ss", tabdata?.data)
+        if (tabdata?.data?.length > 0) {
+          console.log("ssk", tabdata?.data)
+          setUserdata(tabdata?.data)
+        }
+      }, [tabdata])
 
     const tempData = userdata.length > 0 ? userdata.map((items) => {
             return {
@@ -104,14 +111,15 @@ const Viewusers = () => {
                             <div className='items'>
                                 <div className='del-icon'
                                     onClick={() => {
+                                        alert("user deleted")
                                         deleteUser(value);
+                                        refetch()
                                     }}>
                                     <MdDelete size={20} />
                                 </div>
                                 <div className='edit-icon'>
                                     <button type='button' onClick={() => {
                                         setSelectedValue(value)
-                                        openModel()
                                     }}> <MdOutlineDownloadDone size={20} /></button>
                                 </div>
                             </div>
@@ -120,21 +128,21 @@ const Viewusers = () => {
         },
     ]
 
-    const [deleteuser, setDeleteuser] = useState()
+    // const [deleteuser, setDeleteuser] = useState()
 
+    const {refetch} = useQuery('users/update')
     const deleteUser = (id) => {
         const uid = parseInt(id)
-        http.delete(`http://192.168.100.135:3000/users/${id}`)
+        http.delete(`/users/${id}`)
             .then(response => {
                 if (response.status === 200) {
-                    setDeleteuser(userdata.filter(task => task.id === uid))
+                    userdata.filter(task => task.id === uid)
                     console.log(response, "response")
                 }
             })
             .catch(error => {
                 console.log(error)
             })
-            alert("Deleted user")
     }
 
 

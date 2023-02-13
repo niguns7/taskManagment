@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 import Authuser from '../../../Components/Forms/Authuser';
+import { useQuery } from 'react-query';
 
 const Upopup = ({ closeMode, selecteddata, selectedValue }) => {
     console.log(selecteddata)
@@ -71,14 +72,11 @@ const Upopup = ({ closeMode, selecteddata, selectedValue }) => {
         designation: values.designation,
     }
 
+    const {refetch} = useQuery('users/update')
+
     const putdata = () => {
         http.put(`/users/update/${id}`, body)
-            .then(response => {
-                console.log("response: ", response?.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        refetch()
     }
 
 
