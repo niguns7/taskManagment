@@ -23,7 +23,7 @@ const Tasklog = () => {
   const [useritems, setUseritems] = useState()
 
   useEffect(() => {
-    http.get(`http://192.168.100.135:3000/tasks/admin/log/${sn}`)
+    http.get(`/tasks/admin/log/${sn}`)
       .then(Response => {
         setUseritems(Response?.data?.data)
         console.log(Response?.data?.data)

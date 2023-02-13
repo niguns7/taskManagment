@@ -10,7 +10,7 @@ const Allusers = () => {
     const [useritems, setUseritems] = useState([])
 
     useEffect (() => {
-        http.get('http://192.168.100.135:3000/users/info')
+        http.get('/users/info')
             .then((Res) => {
                 setUseritems(Res?.data?.data)
                 console.log(Res?.data?.data)
