@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import './AdminDash.css';
+import { FaArrowAltCircleLeft, FaTasks, FaUserAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import avtar from '../../../assets/Avtar.png';
-import AdminCards from './AdminCards';
-import { FaUserAlt } from 'react-icons/fa';
-import { FaTasks } from 'react-icons/fa';
-import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import Authuser from '../../Forms/Authuser';
-import axios from 'axios';
+import AdminCards from './AdminCards';
+import './AdminDash.css';
 
 const AdminDash = () => {
   const { http } = Authuser()
@@ -19,16 +15,17 @@ const AdminDash = () => {
   }
 
   const [pagedata, setPagedata] = useState([])
-  useState(() => {
-    http.get('/users/admin/me/data')
+
+  useState(async() => {
+   await http.get('/users/admin/me/data')
       .then((res) => {
         setPagedata(res?.data?.data)
         console.log(res?.data?.data)
       }).catch((err) => console.log(err))
-  })
+  }, [])
 
 
-  const imgBaseUrl = `http://192.168.100.135:80/${pagedata.imageUrl}`;
+  const imgBaseUrl = `http://192.168.100.135:3000/users/images/${pagedata.imageUrl}`;
 
 
   let navigate = useNavigate();
