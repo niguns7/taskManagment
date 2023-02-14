@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import './Tasks.css';
-import { useTable } from 'react-table';
-import { Column } from './Column';
-import axios from 'axios';
-import Authuser from '../../Forms/Authuser';
 import { useFormik } from 'formik';
-import { useParams } from 'react-router-dom';
-import AssignTask from './AssignTask/AssignTask';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { useTable } from 'react-table';
+import Authuser from '../../Forms/Authuser';
+import AssignTask from './AssignTask/AssignTask';
+import { Column } from './Column';
+import './Tasks.css';
 
 const Tasks = () => {
   const sn = useParams()
