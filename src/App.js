@@ -43,7 +43,6 @@ function App() {
           <Route exact path="/tasks/:sn" element={<ProtectedRoute Component={<Tasks/>}/>} />
           <Route exact path="/usertasklog" element={<ProtectedRoute Component={<UserTasklog/>}/>} />
           <Route exact path="/tasklog/:id" element={<ProtectedRoute Component={<Tasklog/>}/>} />
-
           </Routes>
           </QueryClientProvider>
   );
