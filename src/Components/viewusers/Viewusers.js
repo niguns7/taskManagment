@@ -41,9 +41,8 @@ const Viewusers = () => {
         return res?.data
       }
     
-      const { data: tabdata } = useQuery("tabdata", () => fetchdata())
-    
-    
+      const { data: tabdata , isLoading } = useQuery("tabdata", () => fetchdata())
+        
       useEffect(() => {
         console.log("ss", tabdata?.data)
         if (tabdata?.data?.length > 0) {
