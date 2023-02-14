@@ -5,6 +5,14 @@
     font-size: 4vh;
     font-weight: 500;
 }
+.tasklog_topheading{
+    display: flex;
+    justify-content: space-between;
+}
+.tasklog_topheading .td-filter{
+    margin-top: 5vh;
+    margin-right: 5vh;
+}
 .personal-infoo img{
     border-radius: 60%;
 }
@@ -31,4 +39,32 @@
 .user-cardss h5:hover{
     color: #ffb703;
     cursor: pointer;
+}
+.td-filter {
+    display: flex;
+    gap: 2vh;
+    margin-top: 2vh;
+    margin-left: 5vh;
+    margin-bottom: 2vh;
+}
+.td-filter input{
+    width: 20vh;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    outline: none;
+}
+.td-filter button{
+    padding: 5px;
+    width: 10vh;
+    background-color: #219ebc;
+    border-radius: 1vh;
+    color: white;
+}
+.td-filter button:hover{
+  cursor: pointer;
+  background-color: #ffb703;
+}
+.td-filter label{
+    margin-top: 1.2vh;
 }
