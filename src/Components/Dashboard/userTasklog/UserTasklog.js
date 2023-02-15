@@ -136,7 +136,8 @@ const UserTasklog = () => {
 
           <div className='Heading'>
             <div className='head-img'>
-              <img className='avtar' src={imgBaseUrl} alt='adminavtar' />
+            {imgBaseUrl && <img className='avtar' src={imgBaseUrl} alt='adminavtar' />}
+
             </div>
             <div className='head-items'>
               <h2>{logData.fullname}</h2>
