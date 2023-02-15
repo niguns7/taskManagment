@@ -13,7 +13,7 @@
 }
 
 .user-cardss{
-    margin-top: 4vh;
+    margin-top: 2vh;
     width: 60vh;
     height: 75vh;
     background-color: rgb(244, 244, 244);
@@ -85,6 +85,11 @@
 .users-avtar{
     max-width: 10vh;
     margin: 0 auto;
+    margin-top: 2vh;
+}
+.usertasklog_topheading{
+    display: flex;
+    margin-left: 60vw;
     margin-top: 2vh;
 }
 @media screen and (max-width: 600px) {
