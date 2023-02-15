@@ -8,6 +8,7 @@ import './UserDashboard.css';
 
 const UserDashboard = () => {
   const { getToken ,http } = Authuser()
+  const [pagedata, setPagedata] = useState([])
 
   const logout = async () => {
     sessionStorage.clear('token')
@@ -20,7 +21,6 @@ const UserDashboard = () => {
     'Authorization': `Bearer ${getToken()}`
   };
 
-  const [pagedata, setPagedata] = useState([])
   useEffect(() => {
     http.get('/users/user/me/data', { headers: headers })
       .then((res) => {
@@ -53,7 +53,8 @@ const UserDashboard = () => {
 
           <div className='Heading'>
             <div className='head-img'>
-              <img className='avtar' src={imgBaseUrl} alt='adminavtar' />
+            {imgBaseUrl && <img className='avtar' src={imgBaseUrl} alt='adminavtar' />}
+
             </div>
             <div className='head-items'>
               <h2>{pagedata.fullname}</h2>
