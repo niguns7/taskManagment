@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useTable } from 'react-table';
@@ -7,25 +7,50 @@ import Authuser from '../../Forms/Authuser';
 import AssignTask from './AssignTask/AssignTask';
 import { Column } from './Column';
 import './Tasks.css';
-import {intialdate,finaldate} from '../Tasklog'
+import { TaskContext } from '../../contextprovider/Context';
+
 
 const Tasks = () => {
+  const { initialyear } = useContext(TaskContext)
+  const { initialmonth } = useContext(TaskContext)
+
+  console.log(initialyear, initialmonth)
+
+  const isSelected = initialmonth && initialyear ? true : false;
+  console.log(isSelected);
+
+
   const sn = useParams()
-  const id = Object.values(sn)
+  const id = (sn?.sn)
 
   const { http } = Authuser()
   const [userdata, setUserdata] = useState([])
 
-  const fetchdata = async () => {
-    const res = await http.get(`/tasks/admin/user/${id}?fromdate=${new Date().toISOString().substring(0, 10)}&todate=${new Date().toISOString().substring(0, 10)}`)
-    return res?.data
-  }
+  const year = parseInt(initialyear);
+  const month = parseInt(initialmonth);
+
+  const fromDate = new Date(year, month - 1, 1,  23, 59, 59, 999);
+  const toDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+  console.log("fromdate", fromDate)
+  console.log("todate", toDate)
+
+  const fromDateStr = isSelected? fromDate.toISOString().substring(0, 10): new Date().toISOString().substring(0, 10) ;
+  const toDateStr = isSelected? toDate.toISOString().substring(0, 10):new Date().toISOString().substring(0, 10) ;
+
+
+  // console.log("fromdate", fromDateStr)
+  // console.log("todate", toDateStr)
+
+    const fetchdata = async () => {
+      const res = await http.get(`/tasks/admin/user/${id}?fromdate=${fromDateStr}&todate=${toDateStr}`)
+      return res?.data
+    }
 
   const { data: tabdata } = useQuery("tabdata", () => fetchdata())
 
 
   useEffect(() => {
-    console.log("ss", tabdata?.data)
     if (tabdata?.data?.length > 0) {
       console.log("ssk", tabdata?.data)
       setUserdata(tabdata?.data)
@@ -41,8 +66,6 @@ const Tasks = () => {
         status: items.status,
       }
     }) : []
-    console.log('taskdata: ', taskdata)
-
   }, [userdata])
 
   //filtering tasks according to date
