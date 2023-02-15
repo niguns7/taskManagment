@@ -16,8 +16,8 @@ const AdminDash = () => {
     alert('you are logging out press ok for confirmation ')
   }
 
-  useEffect(async() => {
-   await http.get('/users/admin/me/data')
+  useEffect(() => {
+    http.get('/users/admin/me/data')
       .then((res) => {
         if(res.status === 200){
           setPagedata(res?.data?.data)
@@ -64,7 +64,8 @@ const AdminDash = () => {
 
           <div className='Heading'>
             <div className='head-img'>
-              <img className='avtar' src={imgBaseUrl} alt='adminavtar' />
+            {imgBaseUrl && <img className='avtar' src={imgBaseUrl} alt='adminavtar' />}
+
             </div>
             <div className='head-items'>
               <h2>{pagedata.fullname}</h2>
