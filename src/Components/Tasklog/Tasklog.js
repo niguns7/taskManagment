@@ -1,20 +1,22 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useState,createContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Authuser from '../Forms/Authuser';
 import './Tasklog.css';
-
-
-const intialdate = createContext();
-const finaldate = createContext();
-
+import { TaskContext } from '../contextprovider/Context';
 
 const Tasklog = () => {
+
+  const {initialmonth, setInitialmonth} = useContext(TaskContext);
+  const {initialyear, setInitialyear} = useContext(TaskContext)
+
+  console.log(initialyear, initialmonth)
+
   const [useritems, setUseritems] = useState()
   const [searchedData, setSearcheddata] = useState()
 
   const id = useParams()
-  const sn = Object.values(id)
+  const sn = (id?.id)
 
   const { http } = Authuser()
   const navigate = useNavigate();
@@ -28,10 +30,10 @@ const Tasklog = () => {
     navigate(path)
   }
 
-  useEffect(async () => {
-    await http.get(`/tasks/admin/log/${sn}?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`)
+  useEffect( () => {
+       http.get(`/tasks/admin/log/${sn}?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`)
       .then(Response => {
-        setUseritems(Response?.data?.data)
+       setUseritems(Response?.data?.data)
       })
       .catch(error => {
         console.log(error);
@@ -87,7 +89,7 @@ const Tasklog = () => {
     month: '',
   }
 
-  const { values, handleChange, handleBlur } = useFormik({
+  const { values, handleChange, setFieldValue, handleBlur } = useFormik({
     initialValues: iniitialValues,
   });
 
@@ -96,7 +98,6 @@ const Tasklog = () => {
       .then(response => {
         if (response.status === 200) {
           setSearcheddata(response?.data?.data)
-          // console.log("Response:", response?.data?.data)
         }
       })
       .catch(error => {
@@ -113,8 +114,11 @@ const Tasklog = () => {
           <label> Enter date:</label>
 
           <select
-            value={values.yaer}
-            onChange={handleChange}
+            value={values.year}
+            onChange={(e) => {
+              setInitialyear(e.target.value)
+              setFieldValue("year", e.target.value)
+            }}
             onBlur={handleBlur}
             name='year'
             id='year' >
@@ -126,7 +130,10 @@ const Tasklog = () => {
 
           <select
             value={values.month}
-            onChange={handleChange}
+            onChange={(e) => {
+              setInitialmonth(e.target.value)
+              setFieldValue("month", e.target.value)
+            }}
             onBlur={handleBlur}
             name='month'
             id='month' >
@@ -145,6 +152,7 @@ const Tasklog = () => {
         <div className='user-cardss'>
           <div className='personal-infoo'>
             <h1>Personal information</h1>
+            <h2></h2>
             <h2> <b>Id:</b> {UserData.id}</h2>
             <h2> <b>username:</b> {UserData.username}</h2>
             <h2> <b>Fullname:</b> {UserData.fullname}</h2>
@@ -167,5 +175,4 @@ const Tasklog = () => {
   )
 };
 export default Tasklog;
-export {intialdate,finaldate};
 
