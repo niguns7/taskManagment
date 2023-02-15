@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowAltCircleLeft, FaTasks, FaUserAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Authuser from '../../Forms/Authuser';
@@ -7,6 +7,8 @@ import './AdminDash.css';
 
 const AdminDash = () => {
   const { http } = Authuser()
+  const [pagedata, setPagedata] = useState([])
+
 
   const logout = () => {
     sessionStorage.clear('token')
@@ -14,19 +16,16 @@ const AdminDash = () => {
     alert('you are logging out press ok for confirmation ')
   }
 
-  const [pagedata, setPagedata] = useState([])
-
-  useState(async() => {
+  useEffect(async() => {
    await http.get('/users/admin/me/data')
       .then((res) => {
-        setPagedata(res?.data?.data)
-        console.log(res?.data?.data)
+        if(res.status === 200){
+          setPagedata(res?.data?.data)
+        }
       }).catch((err) => console.log(err))
   }, [])
 
-
-  const imgBaseUrl = `http://192.168.100.135:3000/users/images/${pagedata.imageUrl}`;
-
+  const imgBaseUrl = `http://192.168.100.135:3000/users/images/${pagedata?.imageUrl}`;
 
   let navigate = useNavigate();
 
@@ -89,7 +88,7 @@ const AdminDash = () => {
 
         <div className='display-cards'>
           {
-            CardItems.map((items) => {
+            CardItems?.map((items) => {
               return <AdminCards
                 img={items.img}
                 title={items.Title}

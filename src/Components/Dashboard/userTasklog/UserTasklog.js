@@ -12,17 +12,22 @@ const UserTasklog = () => {
   const [logData, setLogdata] = useState([])
   const [searchedData, setSearcheddata] = useState()
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${getToken()}`
-  };
 
   useEffect(() => {
-    http.get(`/tasks/log?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`, { headers: headers }).then((Res) => {
+    http.get(`/tasks/log?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`).then((Res) => {
       setLogdata(Res?.data?.data)
       console.log('Respons: ', Res?.data?.data)
     }).catch((err) => console.log(err))
   }, [])
+
+  useEffect(() => {
+    if(searchedData !== undefined){
+      setLogdata(searchedData)
+    }
+    else{
+      setLogdata(logData)
+    }
+  }, [searchedData, logData])
 
   const imgBaseUrl = `http://192.168.100.135:3000/users/images/${logData.imageUrl}`;
 
@@ -152,9 +157,9 @@ const UserTasklog = () => {
             <div className='personal-info'>
               <h1>Personal information</h1>
 
-              <img src={imgBaseUrl} className='users-avtar' alt='lmao' />
               <h2> <b>Id: </b>{logData.id}</h2>
               <h2> <b>username: </b>{logData.username}</h2>
+              <h2> <b>Fullname: </b>{logData.fullname}</h2>
               <h2> <b>Email: </b>{logData.email}</h2>
               <h2>  <b>Total tasks:</b> {logData.totaltask}</h2>
               <h2>  <b>Taskdone: </b> {logData.taskdone}</h2>

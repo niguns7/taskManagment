@@ -1,13 +1,17 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,createContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Authuser from '../Forms/Authuser';
 import './Tasklog.css';
 
+
+const intialdate = createContext();
+const finaldate = createContext();
+
+
 const Tasklog = () => {
   const [useritems, setUseritems] = useState()
   const [searchedData, setSearcheddata] = useState()
-  const [finaldata, setFinaldata] = useState()
 
   const id = useParams()
   const sn = Object.values(id)
@@ -163,4 +167,5 @@ const Tasklog = () => {
   )
 };
 export default Tasklog;
+export {intialdate,finaldate};
 
