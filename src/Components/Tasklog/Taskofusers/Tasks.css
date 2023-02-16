@@ -5,3 +5,19 @@
     font-size: 4vh;
     font-weight: 500;
 }
+h9{
+    font-size: 16px;
+    font-weight: 600vh;
+    margin-left: 3vh;
+    margin-top: 2vh;
+    color: #219ebc;
+}
+.taskfil {
+    margin-top: 2vh;
+    margin-left: 5vh;
+    width: 12vw;
+    height: 5vh;
+    background-color: white;
+    border-radius: 1vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}

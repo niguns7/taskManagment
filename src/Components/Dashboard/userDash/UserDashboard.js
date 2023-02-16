@@ -28,7 +28,7 @@ const UserDashboard = () => {
       }).catch((err) => console.log(err))
   }, [])
 
-  const imgBaseUrl = `http://139.59.64.228:3006/users/images/${pagedata.imageUrl}`;
+  const imgBaseUrl = `http://192.168.100.135:3000/users/images/${pagedata.imageUrl}`;
 
   const navigate = useNavigate();
   const Taskchange = () => {

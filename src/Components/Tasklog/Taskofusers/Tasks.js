@@ -113,29 +113,40 @@ const Tasks = () => {
 
   return (
     <>
-      <AssignTask id={id} />
-      <div className='mainpage'>
+      {
+      isSelected ?
+      <div className='taskfil'>
+        <h9> Task of  <b>{year} , {month}</b></h9> 
+      </div> : 
+
+      <>
+      <AssignTask id={id}/>
         <div className='d-filter' onSubmit={handleSubmit}>
-          <label> Filter date: </label>
-          <input
-            type="date"
-            id="date"
-            name="fromdate"
-            value={values.fromdate}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          <label> to: </label>
-          <input
-            type="date"
-            id="date"
-            name="todate"
-            value={values.todate}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          <button onClick={filterdate} type='button'>Search</button>
-        </div>
+      <label> Filter date: </label>
+      <input
+        type="date"
+        id="date"
+        name="fromdate"
+        value={values.fromdate}
+        onBlur={handleBlur}
+        onChange={handleChange}
+      />
+      <label> to: </label>
+      <input
+        type="date"
+        id="date"
+        name="todate"
+        value={values.todate}
+        onBlur={handleBlur}
+        onChange={handleChange}
+      />
+      <button onClick={filterdate} type='button'>Search</button>
+    </div>
+    
+      </>
+      
+    }
+      <div className='mainpage'>
         <div className='Container'>
           <table {...getTableProps()}>
             <thead>
@@ -175,7 +186,7 @@ const Tasks = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div>       
     </>
   )
 }
