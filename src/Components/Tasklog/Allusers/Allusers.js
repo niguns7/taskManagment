@@ -33,7 +33,7 @@ const Allusers = () => {
                 <div className='displayuser-card'>
                     {
                         useritems.map((userdata) => {
-                            const imgBaseUrl = `http://192.168.100.135:3000/users/images/${userdata.imageUrl}`;
+                            const imgBaseUrl = `http://139.59.64.228:3006/users/images/${userdata.imageUrl}`;
                             return <AllusersCard
                                 image={imgBaseUrl}
                                 Id={userdata.id}

@@ -29,7 +29,7 @@ const UserTasklog = () => {
     }
   }, [searchedData, logData])
 
-  const imgBaseUrl = `http://192.168.100.135:3000/users/images/${logData.imageUrl}`;
+  const imgBaseUrl = `http://139.59.64.228:3006/users/images/${logData.imageUrl}`;
 
   const [style, setStyle] = useState({});
 
